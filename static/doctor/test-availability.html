@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Doctor Availability</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .test-btn { padding: 10px 20px; margin: 10px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        .test-btn:hover { background: #0056b3; }
+    </style>
+</head>
+<body>
+    <h1>Test Doctor Availability</h1>
+    <p>This is a minimal test page to check if the scripts load without errors.</p>
+
+    <button class="test-btn" onclick="testSaveAvailability()">Test Save Availability</button>
+    <button class="test-btn" onclick="testViewSchedule()">Test View Schedule</button>
+
+    <div id="test-output"></div>
+
+    <script>
+        function testSaveAvailability() {
+            document.getElementById('test-output').innerHTML = '<p>Testing Save Availability...</p>';
+            try {
+                if (typeof saveAvailability === 'function') {
+                    document.getElementById('test-output').innerHTML += '<p>✓ saveAvailability function exists</p>';
+                } else {
+                    document.getElementById('test-output').innerHTML += '<p>✗ saveAvailability function not found</p>';
+                }
+            } catch (error) {
+                document.getElementById('test-output').innerHTML += '<p>✗ Error: ' + error.message + '</p>';
+            }
+        }
+
+        function testViewSchedule() {
+            document.getElementById('test-output').innerHTML = '<p>Testing View Schedule...</p>';
+            try {
+                if (typeof showScheduleView === 'function') {
+                    document.getElementById('test-output').innerHTML += '<p>✓ showScheduleView function exists</p>';
+                } else {
+                    document.getElementById('test-output').innerHTML += '<p>✗ showScheduleView function not found</p>';
+                }
+            } catch (error) {
+                document.getElementById('test-output').innerHTML += '<p>✗ Error: ' + error.message + '</p>';
+            }
+        }
+    </script>
+
+    <!-- Load the actual scripts -->
+    <script src="availability.js"></script>
+</body>
+</html>

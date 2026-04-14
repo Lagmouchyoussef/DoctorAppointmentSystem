@@ -1,0 +1,943 @@
+/* Appointments Page Styles */
+
+.appointments-content {
+    padding: 30px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+/* Calendar Section */
+.calendar-section {
+    background-color: var(--card-bg);
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    transition: background-color 0.3s ease;
+}
+
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.calendar-header h2 {
+    color: var(--text-primary);
+    font-size: 22px;
+    font-weight: 600;
+    margin: 0;
+}
+
+.calendar-nav {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.calendar-btn {
+    background-color: var(--accent-color);
+    color: white;
+    border: none;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    font-size: 14px;
+}
+
+.calendar-btn:hover {
+    background-color: var(--accent-hover);
+    transform: scale(1.1);
+}
+
+#calendar-title {
+    color: var(--text-primary);
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0;
+    min-width: 150px;
+    text-align: center;
+}
+
+.calendar-grid {
+    display: flex;
+    flex-direction: column;
+}
+
+.weekdays {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 5px;
+    margin-bottom: 10px;
+}
+
+.weekdays div {
+    text-align: center;
+    font-weight: 600;
+    color: var(--text-secondary);
+    font-size: 14px;
+    padding: 10px 0;
+}
+
+.days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 5px;
+}
+
+.day {
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    font-weight: 500;
+    position: relative;
+}
+
+.day:hover {
+    background-color: rgba(45, 160, 168, 0.1);
+    color: var(--accent-color);
+    transform: scale(1.05);
+}
+
+.day.selected {
+    background-color: var(--accent-color);
+    color: white;
+    box-shadow: 0 2px 8px rgba(45, 160, 168, 0.3);
+}
+
+.day.today {
+    border: 2px solid var(--accent-color);
+    color: var(--accent-color);
+}
+
+.day.disabled {
+    color: var(--text-secondary);
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.day.disabled:hover {
+    background-color: transparent;
+    color: var(--text-secondary);
+    transform: none;
+}
+
+/* Booking Section */
+.booking-section {
+    background-color: var(--card-bg);
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    transition: background-color 0.3s ease;
+}
+
+.booking-section h2 {
+    color: var(--text-primary);
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 25px;
+}
+
+/* Form Styles */
+.booking-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    color: var(--text-primary);
+    font-weight: 500;
+    margin-bottom: 8px;
+    font-size: 14px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    padding: 12px 16px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+    font-size: 14px;
+    transition: all 0.3s ease;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 3px rgba(45, 160, 168, 0.1);
+}
+
+.form-group input[readonly] {
+    background-color: var(--bg-primary);
+    cursor: not-allowed;
+}
+
+/* Time Slots */
+.time-slots {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: 10px;
+    margin-top: 8px;
+}
+
+.time-slot {
+    padding: 10px 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.time-slot:hover {
+    border-color: var(--accent-color);
+    background-color: rgba(45, 160, 168, 0.05);
+}
+
+.time-slot.selected {
+    background-color: var(--accent-color);
+    color: white;
+    border-color: var(--accent-color);
+}
+
+.time-slot.disabled {
+    background-color: var(--bg-primary);
+    color: var(--text-secondary);
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+.time-slot.disabled:hover {
+    border-color: var(--border-color);
+    background-color: var(--bg-primary);
+}
+
+/* Other Type Field */
+#other-type-group {
+    animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Checkbox Group */
+.checkbox-group {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.checkbox-group input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    margin-top: 2px;
+    accent-color: var(--accent-color);
+}
+
+.checkbox-label {
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--text-secondary);
+    margin-bottom: 0;
+    flex: 1;
+}
+
+.privacy-link {
+    color: var(--accent-color);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.privacy-link:hover {
+    text-decoration: underline;
+}
+
+/* Book Button */
+.btn-book-appointment {
+    background-color: var(--accent-color);
+    color: white;
+    border: none;
+    padding: 14px 24px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.btn-book-appointment:hover {
+    background-color: var(--accent-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(45, 160, 168, 0.3);
+}
+
+.btn-book-appointment:disabled {
+    background-color: var(--text-secondary);
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 2000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    animation: fadeIn 0.3s ease;
+}
+
+.modal-content {
+    background-color: var(--card-bg);
+    margin: 5% auto;
+    padding: 0;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 600px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    animation: slideIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateY(-50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.modal-header {
+    padding: 20px 30px;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-header h3 {
+    color: var(--text-primary);
+    font-size: 20px;
+    font-weight: 600;
+    margin: 0;
+}
+
+.modal-close {
+    color: var(--text-secondary);
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.modal-close:hover {
+    color: var(--accent-color);
+}
+
+.modal-body {
+    padding: 30px;
+    max-height: 60vh;
+    overflow-y: auto;
+}
+
+.modal-body h4 {
+    color: var(--text-primary);
+    font-size: 16px;
+    font-weight: 600;
+    margin: 20px 0 10px 0;
+}
+
+.modal-body h4:first-child {
+    margin-top: 0;
+}
+
+.modal-body p {
+    color: var(--text-secondary);
+    font-size: 14px;
+    line-height: 1.6;
+    margin: 0 0 15px 0;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .appointments-content {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+
+    .calendar-section,
+    .booking-section {
+        padding: 20px;
+    }
+}
+
+@media (max-width: 768px) {
+    .appointments-content {
+        padding: 20px;
+    }
+
+    .calendar-header {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+    }
+
+    .calendar-nav {
+        order: -1;
+    }
+
+    .time-slots {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .checkbox-group {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .modal-content {
+        margin: 10% auto;
+        width: 95%;
+    }
+
+    .modal-body {
+        padding: 20px;
+        max-height: 70vh;
+    }
+}
+
+@media (max-width: 480px) {
+    .time-slots {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .calendar-btn {
+        width: 30px;
+        height: 30px;
+    }
+
+    .btn-book-appointment {
+        padding: 12px 20px;
+        font-size: 15px;
+    }
+}
+
+/* Dark Theme Adjustments */
+[data-theme="dark"] .modal {
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+/* Availability Page Styles */
+.availability-content {
+    padding: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.availability-section {
+    background-color: var(--card-bg);
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    margin-bottom: 30px;
+    transition: background-color 0.3s ease;
+}
+
+.availability-section h2 {
+    color: var(--text-primary);
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 25px;
+}
+
+.availability-form {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.days-selection h3,
+.time-settings h3 {
+    color: var(--text-primary);
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+.days-selection h3 {
+    margin-bottom: 8px;
+}
+
+.days-subtitle {
+    color: var(--text-secondary);
+    font-size: 14px;
+    margin-bottom: 20px;
+    font-weight: 400;
+}
+
+.days-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 16px;
+}
+
+.day-card {
+    position: relative;
+    background: var(--bg-secondary);
+    border: 2px solid transparent;
+    border-radius: 16px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.day-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--accent-color), var(--accent-hover));
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+}
+
+.day-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 25px rgba(45, 160, 168, 0.2);
+    border-color: rgba(45, 160, 168, 0.3);
+}
+
+.day-card input[type="checkbox"] {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.day-card input[type="checkbox"]:checked + .day-content {
+    background: linear-gradient(135deg, rgba(45, 160, 168, 0.1), rgba(45, 160, 168, 0.05));
+}
+
+.day-card input[type="checkbox"]:checked ~ .day-content .day-icon {
+    background-color: var(--accent-color);
+    color: white;
+    transform: scale(1.1);
+}
+
+.day-card input[type="checkbox"]:checked::before {
+    transform: scaleX(1);
+}
+
+.day-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px 16px;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.day-icon {
+    width: 48px;
+    height: 48px;
+    background-color: var(--border-color);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 12px;
+    transition: all 0.3s ease;
+    font-size: 24px;
+    color: var(--text-secondary);
+}
+
+.day-card:hover .day-icon {
+    background-color: var(--accent-color);
+    color: white;
+    transform: scale(1.05);
+}
+
+.day-card input[type="checkbox"]:checked + .day-content .day-icon {
+    background-color: var(--accent-color);
+    color: white;
+    transform: scale(1.1);
+}
+
+.day-card:hover .day-icon {
+    background-color: var(--accent-color);
+    color: white;
+    transform: scale(1.05);
+}
+
+.day-info {
+    text-align: center;
+}
+
+.day-name {
+    display: block;
+    font-weight: 600;
+    color: var(--text-primary);
+    font-size: 14px;
+    text-align: center;
+    transition: color 0.3s ease;
+}
+
+.day-card input[type="checkbox"]:checked + .day-content .day-name {
+    color: var(--accent-color);
+}
+
+/* Weekend days special styling */
+.day-card:has(input[value="saturday"]) .day-icon,
+.day-card:has(input[value="sunday"]) .day-icon {
+    background: linear-gradient(135deg, #f39c12, #e67e22);
+    color: white;
+    box-shadow: 0 4px 12px rgba(243, 156, 18, 0.3);
+}
+
+.day-card:has(input[value="saturday"]):hover .day-icon,
+.day-card:has(input[value="sunday"]):hover .day-icon {
+    background: linear-gradient(135deg, #e67e22, #d35400);
+    color: white;
+    box-shadow: 0 6px 16px rgba(230, 126, 34, 0.4);
+}
+
+.day-card:has(input[value="saturday"]) input[type="checkbox"]:checked + .day-content .day-icon,
+.day-card:has(input[value="sunday"]) input[type="checkbox"]:checked + .day-content .day-icon {
+    background: linear-gradient(135deg, #f39c12, #e67e22);
+    color: white;
+    box-shadow: 0 6px 16px rgba(243, 156, 18, 0.4);
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 6px 16px rgba(243, 156, 18, 0.4);
+    }
+    50% {
+        box-shadow: 0 8px 20px rgba(243, 156, 18, 0.6);
+    }
+    100% {
+        box-shadow: 0 6px 16px rgba(243, 156, 18, 0.4);
+    }
+}
+
+.time-inputs {
+    display: flex;
+    gap: 20px;
+    align-items: end;
+}
+
+.time-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.time-group label {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.time-group input[type="time"] {
+    padding: 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+    font-size: 16px;
+}
+
+.time-note {
+    color: var(--text-secondary);
+    font-size: 14px;
+    margin-top: 10px;
+}
+
+.availability-actions {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.current-availability {
+    background-color: var(--card-bg);
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    transition: background-color 0.3s ease;
+}
+
+.current-availability h2 {
+    color: var(--text-primary);
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .availability-content {
+        padding: 20px;
+    }
+
+    .availability-section {
+        padding: 20px;
+    }
+
+    .days-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+
+    .day-card {
+        padding: 16px 12px;
+    }
+
+    .day-icon {
+        width: 40px;
+        height: 40px;
+        font-size: 20px;
+    }
+
+    .day-name {
+        font-size: 12px;
+    }
+
+    .time-inputs {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .availability-actions {
+        flex-direction: column;
+    }
+
+    .availability-actions .btn-primary,
+    .availability-actions .btn-secondary {
+        width: 100%;
+    }
+}
+
+/* Send Invitation Section */
+.send-invitation-section {
+    background: var(--card-bg);
+    border-radius: 12px;
+    padding: 30px;
+    margin-bottom: 30px;
+    box-shadow: var(--shadow);
+    transition: background-color 0.3s ease;
+}
+
+.send-invitation-section h2 {
+    color: var(--text-primary);
+    font-size: 24px;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+.send-invitation-section > p {
+    color: var(--text-secondary);
+    margin-bottom: 30px;
+    font-size: 16px;
+}
+
+.invitation-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.invitation-form .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.invitation-form .form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.invitation-form .form-group label {
+    color: var(--text-primary);
+    font-weight: 600;
+    margin-bottom: 8px;
+    font-size: 14px;
+}
+
+.invitation-form .form-input {
+    padding: 12px 16px;
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    font-size: 15px;
+    transition: all 0.3s ease;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.invitation-form .form-input:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 3px rgba(45, 160, 168, 0.1);
+}
+
+.invitation-form .form-input:invalid {
+    border-color: #dc3545;
+}
+
+.invitation-form textarea.form-input {
+    resize: vertical;
+    min-height: 80px;
+}
+
+.invitation-form select.form-input {
+    cursor: pointer;
+}
+
+.invitation-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+    margin-top: 10px;
+}
+
+.invitation-actions .btn-primary {
+    background: var(--accent-color) !important;
+    color: white !important;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.invitation-actions .btn-primary:hover {
+    background: var(--secondary-color);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(45, 160, 168, 0.3);
+}
+
+.invitation-actions .btn-primary:active,
+.invitation-actions .btn-primary:focus:active {
+    background: var(--accent-color) !important;
+    transform: none;
+    box-shadow: none;
+    color: white !important;
+}
+
+.invitation-actions .btn-primary:disabled {
+    background: var(--accent-color);
+    color: white;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+    opacity: 0.7;
+}
+
+.invitation-actions .btn-secondary {
+    background: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    padding: 12px 24px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.invitation-actions .btn-secondary:hover {
+    background: var(--border-color);
+    color: var(--text-primary);
+}
+
+@media (max-width: 480px) {
+    .days-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .day-content {
+        padding: 16px 12px;
+    }
+
+    .send-invitation-section {
+        padding: 20px;
+    }
+
+    .invitation-form .form-row {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .invitation-actions {
+        flex-direction: column;
+    }
+
+    .invitation-actions .btn-primary,
+    .invitation-actions .btn-secondary {
+        width: 100%;
+        justify-content: center;
+    }
+}

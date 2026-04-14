@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="patient-dashboard.css">
+    <link rel="stylesheet" href="appointments.css">
+    <title>MediSync - Appointments</title>
+</head>
+<body>
+    <div class="dashboard">
+        <!-- Left Navbar -->
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <img src="../login/Logo_Medisync.png" alt="MediSync Logo" class="logo">
+            </div>
+
+            <ul class="sidebar-menu">
+                <li class="ripple tooltip nav-item" data-tooltip="Dashboard Overview" data-page="dashboard" onclick="window.location.href='/static/patient/patient.html'">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>Dashboard</span>
+                </li>
+                <li class="active ripple tooltip nav-item" data-tooltip="Manage Appointments" data-page="appointments" onclick="window.location.href='/static/patient/appointments.html'">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Appointments</span>
+                </li>
+                <li class="ripple tooltip nav-item" data-tooltip="Appointment History" data-page="history" onclick="window.location.href='/static/patient/history.html'">
+                    <i class="fas fa-history"></i>
+                    <span>History</span>
+                </li>
+                <li class="ripple tooltip nav-item" data-tooltip="Account Settings" data-page="settings" onclick="window.location.href='/static/patient/settings.html'">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                </li>
+            </ul>
+
+            <!-- Patient Profile Section -->
+            <div class="patient-profile">
+                <div class="avatar-img">
+                    <span></span>
+                </div>
+                <div class="patient-info">
+                    <h4></h4>
+                    <p>Patient</p>
+                </div>
+            </div>
+
+            <div class="sidebar-footer">
+                <div class="theme-toggle">
+                    <input type="checkbox" id="theme-switch">
+                    <label for="theme-switch" class="theme-toggle-btn">
+                        <i class="fas fa-moon"></i>
+                        <i class="fas fa-sun"></i>
+                        <span class="ball"></span>
+                    </label>
+                </div>
+                <button class="logout-btn ripple tooltip" data-tooltip="Sign Out">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </button>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="header">
+                <h1>Book Appointment</h1>
+                <div class="header-actions">
+                    <div class="notifications">
+                        <i class="fas fa-bell"></i>
+                    </div>
+                </div>
+            </header>
+
+            <div class="appointments-content">
+                <!-- Calendar Section -->
+                <section class="calendar-section">
+                    <div class="calendar-header">
+                        <h2>Select Date</h2>
+                        <div class="calendar-nav">
+                            <button class="calendar-btn" id="prev-month">
+                                <i class="fas fa-chevron-left"></i>
+                            </button>
+                            <h3 id="calendar-title">December 2026</h3>
+                            <button class="calendar-btn" id="next-month">
+                                <i class="fas fa-chevron-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="calendar-grid">
+                        <div class="weekdays">
+                            <div>Sun</div>
+                            <div>Mon</div>
+                            <div>Tue</div>
+                            <div>Wed</div>
+                            <div>Thu</div>
+                            <div>Fri</div>
+                            <div>Sat</div>
+                        </div>
+                        <div class="days" id="calendar-days">
+                            <!-- Days will be populated by JavaScript -->
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Booking Form Section -->
+                <section class="booking-section">
+                    <h2>Book Your Appointment</h2>
+                    <form id="appointment-form" class="booking-form">
+                        <div class="form-group">
+                            <label for="selected-date">Selected Date</label>
+                            <input type="text" id="selected-date" readonly>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="doctor-select">Choose Doctor</label>
+                            <select id="doctor-select" required>
+                                <option value="">Select a doctor</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Available Time Slots</label>
+                            <div class="time-slots" id="time-slots">
+                                <!-- Time slots will be populated by JavaScript -->
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="appointment-type">Appointment Type</label>
+                            <select id="appointment-type" required>
+                                <option value="">Select type</option>
+                                <option value="consultation">Consultation</option>
+                                <option value="follow-up">Follow-up</option>
+                                <option value="emergency">Emergency</option>
+                                <option value="check-up">Regular Check-up</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group" id="other-type-group" style="display: none;">
+                            <label for="other-type">Please specify the type of appointment</label>
+                            <input type="text" id="other-type" placeholder="E.g: Vaccination, Annual check-up, Specialized consultation..." maxlength="50">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="reason">Reason for Visit</label>
+                            <textarea id="reason" placeholder="Please describe your symptoms or reason for the appointment..." rows="4" required></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="contact-email">Email Address</label>
+                            <input type="email" id="contact-email" placeholder="Enter your email" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="contact-phone">Contact Phone</label>
+                            <input type="tel" id="contact-phone" placeholder="Your phone number" required>
+                        </div>
+
+                        <div class="form-group checkbox-group">
+                            <input type="checkbox" id="gdpr-consent" required>
+                            <label for="gdpr-consent" class="checkbox-label">
+                                I consent to the processing of my personal data in accordance with the <a href="#privacy-notice" class="privacy-link">Privacy Notice</a> and agree to receive automated email reminders for this appointment.
+                            </label>
+                        </div>
+
+                        <button type="submit" class="btn-book-appointment">
+                            <i class="fas fa-calendar-check"></i>
+                            Book Appointment
+                        </button>
+                    </form>
+                </section>
+
+                <!-- Privacy Notice Modal -->
+                <div id="privacy-modal" class="modal">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3>Privacy Notice</h3>
+                            <span class="modal-close">&times;</span>
+                        </div>
+                        <div class="modal-body">
+                            <h4>Data Processing</h4>
+                            <p>MediSync collects and processes your personal data to provide healthcare services, including scheduling and managing appointments. This includes your name, contact information, medical history, and appointment details.</p>
+
+                            <h4>Automated Communications</h4>
+                            <p>By booking an appointment, you agree to receive automated email reminders and notifications related to your appointment. You can opt out of these communications at any time by contacting our support team.</p>
+
+                            <h4>Data Security</h4>
+                            <p>We implement appropriate technical and organizational measures to protect your personal data against unauthorized access, alteration, disclosure, or destruction.</p>
+
+                            <h4>Your Rights</h4>
+                            <p>You have the right to access, rectify, erase, or restrict the processing of your personal data. For more information, please refer to our full Privacy Policy.</p>
+
+                            <h4>Contact Us</h4>
+                            <p>If you have any questions about our privacy practices, please contact our Data Protection Officer at privacy@mediplanif.com.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="appointments.js"></script>
+</body>
+</html>

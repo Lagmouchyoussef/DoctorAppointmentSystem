@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="patient-dashboard.css">
+    <title>MediSync - Patient Dashboard</title>
+</head>
+<body>
+    <div class="dashboard">
+        <!-- Left Navbar -->
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <img src="../login/Logo_Medisync.png" alt="MediSync Logo" class="logo">
+            </div>
+
+            <ul class="sidebar-menu">
+                <li class="active ripple tooltip nav-item" data-tooltip="Dashboard Overview" data-page="dashboard" onclick="if (this.dataset.page === 'dashboard') window.location.href='/static/patient/patient.html'; else window.location.href='/static/patient/' + this.dataset.page + '.html';">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>Dashboard</span>
+                </li>
+                <li class="ripple tooltip nav-item" data-tooltip="Manage Appointments" data-page="appointments" onclick="if (this.dataset.page === 'dashboard') window.location.href='/static/patient/patient.html'; else window.location.href='/static/patient/' + this.dataset.page + '.html';">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Appointments</span>
+                </li>
+                <li class="ripple tooltip nav-item" data-tooltip="Appointment History" data-page="history" onclick="if (this.dataset.page === 'dashboard') window.location.href='/static/patient/patient.html'; else window.location.href='/static/patient/' + this.dataset.page + '.html';">
+                    <i class="fas fa-history"></i>
+                    <span>History</span>
+                </li>
+                <li class="ripple tooltip nav-item" data-tooltip="Account Settings" data-page="settings" onclick="if (this.dataset.page === 'dashboard') window.location.href='/static/patient/patient.html'; else window.location.href='/static/patient/' + this.dataset.page + '.html';">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                </li>
+            </ul>
+
+            <!-- Patient Profile Section -->
+            <div class="patient-profile">
+                <div class="avatar-img">
+                    <span></span>
+                </div>
+                <div class="patient-info">
+                    <h4></h4>
+                    <p>Patient</p>
+                </div>
+            </div>
+
+            <div class="sidebar-footer">
+                <div class="theme-toggle">
+                    <input type="checkbox" id="theme-switch">
+                    <label for="theme-switch" class="theme-toggle-btn">
+                        <i class="fas fa-moon"></i>
+                        <i class="fas fa-sun"></i>
+                        <span class="ball"></span>
+                    </label>
+                </div>
+                <button class="logout-btn ripple tooltip" data-tooltip="Sign Out" onclick="localStorage.clear(); window.location.href='/static/login/index.html'">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </button>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="header">
+                <h1>Patient Dashboard</h1>
+                <div class="header-actions">
+                    <div class="notifications">
+                        <i class="fas fa-bell"></i>
+                    </div>
+                </div>
+            </header>
+
+            <div class="dashboard-content">
+                <!-- Welcome Section -->
+                <section class="welcome-card">
+                    <h2>Welcome to MediSync</h2>
+                    <p>Manage your healthcare appointments and medical records.</p>
+                    <button class="btn-primary" onclick="document.getElementById('schedule-modal').style.display='block'">Schedule New Appointment</button>
+                </section>
+
+                <!-- Appointment Invitations -->
+                <section class="invitations-section">
+                    <h2><i class="fas fa-envelope"></i> Appointment Invitations</h2>
+                    <div class="invitations-container">
+                        <div class="no-invitations-message">
+                            <i class="fas fa-inbox"></i>
+                            <h3>No pending invitations</h3>
+                            <p>You'll receive appointment invitations from doctors here</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Email Notifications -->
+                <section class="emails-section">
+                    <h2><i class="fas fa-mailbox"></i> Recent Emails</h2>
+                    <div class="emails-container">
+                        <div class="no-emails-message">
+                            <i class="fas fa-envelope-open"></i>
+                            <h3>No recent emails</h3>
+                            <p>Email notifications will appear here</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Quick Stats -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon appointments">
+                            <i class="fas fa-calendar-check"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>0</h3>
+                            <p>Total Appointments</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon doctors">
+                            <i class="fas fa-user-md"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>0</h3>
+                            <p>Doctors Visited</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon prescriptions">
+                            <i class="fas fa-prescription"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>0</h3>
+                            <p>Active Prescriptions</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon health">
+                            <i class="fas fa-heartbeat"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>0%</h3>
+                            <p>Health Score</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Health Charts Section -->
+                <section class="charts-section">
+                    <h2>Health Analytics</h2>
+                    <div class="charts-grid">
+                        <!-- Blood Pressure Chart -->
+                        <div class="chart-card">
+                            <div class="chart-header">
+                                <h3><i class="fas fa-heartbeat"></i> Blood Pressure Trend</h3>
+                                <span class="chart-period">Last 6 months</span>
+                            </div>
+                            <div class="chart-container">
+                                <canvas id="bloodPressureChart"></canvas>
+                            </div>
+                        </div>
+
+                        <!-- Weight Chart -->
+                        <div class="chart-card">
+                            <div class="chart-header">
+                                <h3><i class="fas fa-weight"></i> Weight Tracking</h3>
+                                <span class="chart-period">Last 6 months</span>
+                            </div>
+                            <div class="chart-container">
+                                <canvas id="weightChart"></canvas>
+                            </div>
+                        </div>
+
+                        <!-- Appointments by Month -->
+                        <div class="chart-card">
+                            <div class="chart-header">
+                                <h3><i class="fas fa-calendar-alt"></i> Appointments Overview</h3>
+                                <span class="chart-period">This year</span>
+                            </div>
+                            <div class="chart-container">
+                                <canvas id="appointmentsChart"></canvas>
+                            </div>
+                        </div>
+
+                        <!-- Health Metrics Dashboard -->
+                        <div class="chart-card">
+                            <div class="chart-header">
+                                <h3><i class="fas fa-chart-pie"></i> Health Metrics</h3>
+                                <span class="chart-period">Current status</span>
+                            </div>
+                            <div class="chart-container">
+                                <canvas id="healthMetricsChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Appointments Statistics -->
+                <section class="stats-section">
+                    <h2>Appointment Statistics</h2>
+                    <div class="stats-overview">
+                        <div class="stat-box">
+                            <div class="stat-value">0</div>
+                            <div class="stat-label">Total Appointments</div>
+                            <div class="stat-trend neutral">
+                                <i class="fas fa-minus"></i>
+                                No data yet
+                            </div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-value">0</div>
+                            <div class="stat-label">Completed</div>
+                            <div class="stat-trend neutral">
+                                <i class="fas fa-minus"></i>
+                                No data yet
+                            </div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-value">0</div>
+                            <div class="stat-label">Upcoming</div>
+                            <div class="stat-trend neutral">
+                                <i class="fas fa-minus"></i>
+                                No data yet
+                            </div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-value">0</div>
+                            <div class="stat-label">Cancelled</div>
+                            <div class="stat-trend neutral">
+                                <i class="fas fa-minus"></i>
+                                No data yet
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Specialty Breakdown -->
+                    <div class="specialty-breakdown">
+                        <h3>Appointments by Specialty</h3>
+                        <div class="specialty-grid">
+                            <div class="specialty-item">
+                                <div class="specialty-icon cardiology">
+                                    <i class="fas fa-heart"></i>
+                                </div>
+                                <div class="specialty-info">
+                                    <span class="specialty-name">Cardiology</span>
+                                    <span class="specialty-count">0 appointments</span>
+                                </div>
+                                <div class="specialty-percentage">0%</div>
+                            </div>
+                            <div class="specialty-item">
+                                <div class="specialty-icon dentistry">
+                                    <i class="fas fa-tooth"></i>
+                                </div>
+                                <div class="specialty-info">
+                                    <span class="specialty-name">Dentistry</span>
+                                    <span class="specialty-count">0 appointments</span>
+                                </div>
+                                <div class="specialty-percentage">0%</div>
+                            </div>
+                            <div class="specialty-item">
+                                <div class="specialty-icon neurology">
+                                    <i class="fas fa-brain"></i>
+                                </div>
+                                <div class="specialty-info">
+                                    <span class="specialty-name">Neurology</span>
+                                    <span class="specialty-count">0 appointments</span>
+                                </div>
+                                <div class="specialty-percentage">0%</div>
+                            </div>
+                            <div class="specialty-item">
+                                <div class="specialty-icon ophthalmology">
+                                    <i class="fas fa-eye"></i>
+                                </div>
+                                <div class="specialty-info">
+                                    <span class="specialty-name">Ophthalmology</span>
+                                    <span class="specialty-count">0 appointments</span>
+                                </div>
+                                <div class="specialty-percentage">0%</div>
+                            </div>
+                            <div class="specialty-item">
+                                <div class="specialty-icon general-medicine">
+                                    <i class="fas fa-stethoscope"></i>
+                                </div>
+                                <div class="specialty-info">
+                                    <span class="specialty-name">General Medicine</span>
+                                    <span class="specialty-count">0 appointments</span>
+                                </div>
+                                <div class="specialty-percentage">0%</div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Upcoming Appointments -->
+                <section class="appointments-section">
+                    <h2>Upcoming Appointments</h2>
+                    <div class="no-data-message">
+                        <i class="fas fa-calendar-plus"></i>
+                        <h3>No upcoming appointments</h3>
+                        <p>Schedule your first appointment to get started</p>
+                        <button class="btn-primary">Schedule Appointment</button>
+                    </div>
+                </section>
+
+                <!-- Recent Activity -->
+                <section class="activity-section">
+                    <h2>Recent Activity</h2>
+                    <div class="no-data-message">
+                        <i class="fas fa-history"></i>
+                        <h3>No recent activity</h3>
+                        <p>Your medical activity will appear here once you start using the system</p>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- Schedule Appointment Modal -->
+    <div id="schedule-modal" class="modal" onclick="if(event.target === this) this.style.display='none'">
+        <div class="modal-content">
+            <span class="close" onclick="document.getElementById('schedule-modal').style.display='none'">&times;</span>
+            <h2>Schedule New Appointment</h2>
+            <form id="schedule-form" onsubmit="document.getElementById('schedule-modal').style.display='none'; alert('Appointment scheduled (simulated)'); return false;">
+                <select id="doctor-select" required>
+                    <option value="">Select Doctor</option>
+                </select>
+                <input type="datetime-local" id="appointment-datetime" required>
+                <textarea id="appointment-reason" placeholder="Reason for appointment" required></textarea>
+                <button type="submit" class="btn-primary">Schedule</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="patient-dashboard.js?v=5"></script>
+</body>
+</html>

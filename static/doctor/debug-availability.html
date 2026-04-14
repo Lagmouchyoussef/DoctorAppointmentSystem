@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Basic Functions</title>
+</head>
+<body>
+    <h1>Testing Basic Functions</h1>
+    <button onclick="testLoadAvailability()">Test loadAvailability</button>
+    <button onclick="testSaveAvailability()">Test saveAvailability</button>
+    <button onclick="testShowScheduleView()">Test showScheduleView</button>
+
+    <div id="test-results"></div>
+
+    <script>
+        window.testLoadAvailability = function() {
+            try {
+                if (typeof loadAvailability === 'function') {
+                    loadAvailability();
+                    addResult('✓ loadAvailability executed successfully');
+                } else {
+                    addResult('✗ loadAvailability function not found');
+                }
+            } catch (error) {
+                addResult('✗ Error in loadAvailability: ' + error.message);
+            }
+        };
+
+        window.testSaveAvailability = function() {
+            try {
+                if (typeof saveAvailability === 'function') {
+                    saveAvailability();
+                    addResult('✓ saveAvailability executed successfully');
+                } else {
+                    addResult('✗ saveAvailability function not found');
+                }
+            } catch (error) {
+                addResult('✗ Error in saveAvailability: ' + error.message);
+            }
+        };
+
+        window.testShowScheduleView = function() {
+            try {
+                if (typeof showScheduleView === 'function') {
+                    showScheduleView();
+                    addResult('✓ showScheduleView executed successfully');
+                } else {
+                    addResult('✗ showScheduleView function not found');
+                }
+            } catch (error) {
+                addResult('✗ Error in showScheduleView: ' + error.message);
+            }
+        };
+
+        function addResult(message) {
+            const div = document.getElementById('test-results');
+            const p = document.createElement('p');
+            p.textContent = message;
+            div.appendChild(p);
+        }
+
+        // Test if functions exist on load
+        window.addEventListener('load', function() {
+            addResult('Page loaded. Checking functions...');
+            addResult('loadAvailability: ' + (typeof loadAvailability === 'function' ? '✓' : '✗'));
+            addResult('saveAvailability: ' + (typeof saveAvailability === 'function' ? '✓' : '✗'));
+            addResult('showScheduleView: ' + (typeof showScheduleView === 'function' ? '✓' : '✗'));
+        });
+    </script>
+
+    <script src="availability.js"></script>
+</body>
+</html>

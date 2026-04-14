@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <title>MediSync Login</title>
+  </head>
+
+  <body>
+    <div class="container active" id="container">
+      <div class="form-container sign-up">
+        <form>
+          <img src="Logo_Medisync.png" alt="MediSync Logo" class="logo-responsive">
+          <h1>Create Account</h1>
+          <div class="social-icons">
+            <a href="#" class="icon"
+              ><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAA7VBMVEVHcEz/RkL/R0D+SEr/RUD/RkOwjlb/SD7/SE3/SUj/Vzb/VDf9TFb8TVeHoFb/YTD/byn8TVn/jRr/fSL/mxL/SEj+yQn/ohH/tQv+VUb/vQn/wwn+zgj9wQm3xQ39zgT6zQYwhv/7zgowhv8uhv0ek+Avhv7yzAPjywIvhv0whv7PyQHUygIth/y3yAEnivSlxwGSxgUak94fj+h5xAlgwxMLqp8NnsQVlte6xwBNwh45wC0xwDMLt28IrJgJpa0kjPCaxQEpvzsevkkWvVANumQQu18JtXkIsIgTvVYOvGALuWtJwh4OvF8OvF9ccfxCAAAAT3RSTlMAUZvT7P8T//+wiv//kAv6/mD//+V2jv//JKf//0EmxOr/rP7+MEX//x10/6eu//3+/9v///7I//+K//+KS/3/YeX//7dsnv7/////5s3tMAqBMAAAAXFJREFUeAF0jUUCwCAMwDp3d/f9/4krnVt6goQCFzheECVJFHgOPpB5RZHYIKqqyU+vGwpCXkVM07pp2zEQ8hSYiCBf1rsuFrQCvaSahHe+9wMqWHJuOD2E/lYoWsRxkUbBxcdJshY6bEQ3L6fpWmTnXXbxkBcpJTb8UBZFgUX156uyLLHI4Y+YgqL+DZqS0R7n7o4NLQX9GQwbI5tugpKI7wF5Rjd/BiNCCQZfX5BfCwyWrsnagGEYiKKpMkLqgJmZmXn/caKTzGoM7+v4IEiWPQdJ4fMhFujHCzjH7Wny6xFwMB9UKBa4KN3Tl4kh9AZYVJRbpXhVVRGX0asEXNP1a7MM0wQJA+0WFcQtyz7bcFzPAwn+8AkPwmjDcZK6WJGR75zwsCirOo7rpu0SojC2oQUeIF72/TCMY4sUKSj2wX9iXgAHwYgEoKBPizOBgx4EhwnCtxOtDnYTzn1Gnw3wzYQT3zDJrpmXYVjmpj7d/gPknlJE6eZSewAAAABJRU5ErkJggg==" alt="Google"></a>
+            <a href="#" class="icon"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y+mAAAAV1BMVEVHcEwHZv/O1v8HaP8Haf8IZ/8IaP8IZv8IZ/8IaP/r7/8IZ/8IZ/8AW/////+fsf8HZv////8AYP8AWf8AZP+Vqf/V3P8IZ/9wlP9jiv+tvP+Lpf82c/8XNRKaAAAAEHRSTlMAM/2GGN1h9exC+8LBwcGFy8UXywAAAPNJREFUKJFlk+kSgyAMhDnUQe2BQQtU3/85yxEi0P3l+E1gkyyMFXG5KmvVKjnrNSlNUlODhlE3GoebzVZ3sjMx+reDiYLwiXSgOrCHWJaPcIHafDLdB27L+sbSMfkk5rca6uiZejBLC1XoncxcSM7T7+kPZ7K78TIAmWnJHgTPyD7mbna9r4Sjh4phk7sxqVLEIeCxFiG1mISGLB67+xrmUqvQENRwMcWQ/D9WmNIKxwk4/01uvXMXGuJlfGFZR66iGahq8H99TtXKejjWy+4gLhtj0sG5CVgD74DlaNawjmYKNRxlAF2o03N4v0JOxLN6Dj8GhSiE70/PKAAAAABJRU5ErkJggg==" alt="Facebook"></a>
+            <a href="#" class="icon"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABDUlEQVR4AWP4////gOLB44D6nTcsGIo33QHi/zTGd0B2YTiAPpYjHIHNAf/piQk6wGPW8f/rLz8HYRCbXg5AWI4GQGJ0cwDY12gAJDbcHUA4CkZAIqQUK7Ts/m/SfxBMs5RupswBaACr+P47b/5zlG/5DyzZ/r/+8hNF7vuvP//nn3r0X6JhJ+0ccPrR+/+H7735jw9cf/n5v0D1Nuo5gBxQve06zR0AjoL7b7/+//zjN4bc+ScfaOeA33///k9Yfg4mDw7u/Xdeo6uhnQP6D93FMNxlxjF0ZbRzgMXEQ9iyI90cALIMJoccDXRzAK6CZog6YNQBow6gIx54Bwx4x2RAu2bAysoEZu9o7xgAQrvkxt3WZi0AAAAASUVORK5CYII=" alt="GitHub"></a>
+          </div>
+          <span>or use your email for registration</span>
+          <div class="name-fields">
+            <input type="text" placeholder="First Name" />
+            <input type="text" placeholder="Last Name" />
+          </div>
+          <input type="email" placeholder="Email" />
+          <input type="password" placeholder="Password" />
+          <div class="role-selection">
+            <input type="radio" id="patient" name="role" value="patient">
+            <label for="patient"><i class="fas fa-user"></i> Patient</label>
+            <input type="radio" id="medecin" name="role" value="medecin">
+            <label for="medecin"><i class="fas fa-user-md"></i> Doctor</label>
+          </div>
+          <button type="submit" class="btn-signup">Sign Up</button>
+        </form>
+      </div>
+      <div class="form-container sign-in">
+        <form>
+          <img src="Logo_Medisync.png" alt="MediSync Logo" class="logo-responsive">
+          <h1>Sign In</h1>
+          <div class="social-icons">
+            <a href="#" class="icon"
+              ><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAA7VBMVEVHcEz/RkL/R0D+SEr/RUD/RkOwjlb/SD7/SE3/SUj/Vzb/VDf9TFb8TVeHoFb/YTD/byn8TVn/jRr/fSL/mxL/SEj+yQn/ohH/tQv+VUb/vQn/wwn+zgj9wQm3xQ39zgT6zQYwhv/7zgowhv8uhv0ek+Avhv7yzAPjywIvhv0whv7PyQHUygIth/y3yAEnivSlxwGSxgUak94fj+h5xAlgwxMLqp8NnsQVlte6xwBNwh45wC0xwDMLt28IrJgJpa0kjPCaxQEpvzsevkkWvVANumQQu18JtXkIsIgTvVYOvGALuWtJwh4OvF8OvF9ccfxCAAAAT3RSTlMAUZvT7P8T//+wiv//kAv6/mD//+V2jv//JKf//0EmxOr/rP7+MEX//x10/6eu//3+/9v///7I//+K//+KS/3/YeX//7dsnv7/////5s3tMAqBMAAAAXFJREFUeAF0jUUCwCAMwDp3d/f9/4krnVt6goQCFzheECVJFHgOPpB5RZHYIKqqyU+vGwpCXkVM07pp2zEQ8hSYiCBf1rsuFrQCvaSahHe+9wMqWHJuOD2E/lYoWsRxkUbBxcdJshY6bEQ3L6fpWmTnXXbxkBcpJTb8UBZFgUX156uyLLHI4Y+YgqL+DZqS0R7n7o4NLQX9GQwbI5tugpKI7wF5Rjd/BiNCCQZfX5BfCwyWrsnagGEYiKKpMkLqgJmZmXn/caKTzGoM7+v4IEiWPQdJ4fMhFujHCzjH7Wny6xFwMB9UKBa4KN3Tl4kh9AZYVJRbpXhVVRGX0asEXNP1a7MM0wQJA+0WFcQtyz7bcFzPAwn+8AkPwmjDcZK6WJGR75zwsCirOo7rpu0SojC2oQUeIF72/TCMY4sUKSj2wX9iXgAHwYgEoKBPizOBgx4EhwnCtxOtDnYTzn1Gnw3wzYQT3zDJrpmXYVjmpj7d/gPknlJE6eZSewAAAABJRU5ErkJggg==" alt="Google"></a>
+            <a href="#" class="icon"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y+mAAAAV1BMVEVHcEwHZv/O1v8HaP8Haf8IZ/8IaP8IZv8IZ/8IaP/r7/8IZ/8IZ/8AW/////+fsf8HZv////8AYP8AWf8AZP+Vqf/V3P8IZ/9wlP9jiv+tvP+Lpf82c/8XNRKaAAAAEHRSTlMAM/2GGN1h9exC+8LBwcGFy8UXywAAAPNJREFUKJFlk+kSgyAMhDnUQe2BQQtU3/85yxEi0P3l+E1gkyyMFXG5KmvVKjnrNSlNUlODhlE3GoebzVZ3sjMx+reDiYLwiXSgOrCHWJaPcIHafDLdB27L+sbSMfkk5rca6uiZejBLC1XoncxcSM7T7+kPZ7K78TIAmWnJHgTPyD7mbna9r4Sjh4phk7sxqVLEIeCxFiG1mISGLB67+xrmUqvQENRwMcWQ/D9WmNIKxwk4/01uvXMXGuJlfGFZR66iGahq8H99TtXKejjWy+4gLhtj0sG5CVgD74DlaNawjmYKNRxlAF2o03N4v0JOxLN6Dj8GhSiE70/PKAAAAABJRU5ErkJggg==" alt="Facebook"></a>
+            <a href="#" class="icon"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABDUlEQVR4AWP4////gOLB44D6nTcsGIo33QHi/zTGd0B2YTiAPpYjHIHNAf/piQk6wGPW8f/rLz8HYRCbXg5AWI4GQGJ0cwDY12gAJDbcHUA4CkZAIqQUK7Ts/m/SfxBMs5RupswBaACr+P47b/5zlG/5DyzZ/r/+8hNF7vuvP//nn3r0X6JhJ+0ccPrR+/+H7735jw9cf/n5v0D1Nuo5gBxQve06zR0AjoL7b7/+//zjN4bc+ScfaOeA33///k9Yfg4mDw7u/Xdeo6uhnQP6D93FMNxlxjF0ZbRzgMXEQ9iyI90cALIMJoccDXRzAK6CZog6YNQBow6gIx54Bwx4x2RAu2bAysoEZu9o7xgAQrvkxt3WZi0AAAAASUVORK5CYII=" alt="GitHub"></a>
+          </div>
+          <span>or use your email and password</span>
+          <input type="email" placeholder="Email" />
+          <input type="password" placeholder="Password" />
+          <button type="button" onclick="showResetModal()">Forget Your Password?</button>
+          <button>Sign In</button>
+        </form>
+      </div>
+      <div class="toggle-container">
+        <div class="toggle">
+          <div class="toggle-panel toggle-left">
+            <h1>Access MediSync</h1>
+            <p>Sign in to your healthcare professional account to manage patient care and medical records</p>
+            <button class="hidden" id="login">Sign In</button>
+          </div>
+          <div class="toggle-panel toggle-right">
+            <h1>Join MediSync</h1>
+            <p>
+              Create your professional healthcare account to access comprehensive medical management tools and patient care features
+            </p>
+            <button class="hidden" id="register">Sign Up</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Reset Password Modal -->
+    <div id="reset-modal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="closeResetModal()">&times;</span>
+        <img src="Logo_Medisync.png" alt="MediSync Logo" class="logo-responsive">
+        <h1>Reset Password</h1>
+        <span>Enter your email to receive a reset link</span>
+        <form id="reset-form">
+          <input type="email" placeholder="Email" id="reset-email" required>
+          <button type="submit">Send Reset Link</button>
+        </form>
+      </div>
+    </div>
+
+    <video autoplay muted loop id="background-video">
+      <source src="Backgrond.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+    <script src="script.js"></script>
+    <script>
+      function showResetModal() {
+        document.getElementById('reset-modal').style.display = 'block';
+      }
+
+      function closeResetModal() {
+        document.getElementById('reset-modal').style.display = 'none';
+      }
+
+      document.getElementById('reset-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const email = document.getElementById('reset-email').value;
+        if (email) {
+          alert(`A reset link has been sent to ${email}.`);
+          closeResetModal();
+        } else {
+          alert('Please enter your email.');
+        }
+      });
+
+      // Close modal when clicking outside
+      window.onclick = function(event) {
+        const modal = document.getElementById('reset-modal');
+        if (event.target == modal) {
+          modal.style.display = 'none';
+        }
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,629 @@
+/* History Page Styles */
+
+/* Override variables for consistent gray background */
+:root {
+    --bg-secondary: #f8f9fa;
+}
+
+.history-content {
+    padding: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Stats Summary */
+.stats-summary {
+    background: #f8f9fa !important;
+    padding: 15px 20px;
+    border-radius: 6px;
+    margin-bottom: 25px;
+    text-align: center;
+    font-size: 14px;
+    color: #374151;
+    border: 1px solid #e9ecef;
+}
+
+.stats-summary i {
+    font-size: 12px;
+    margin-right: 3px;
+    opacity: 0.8;
+}
+
+.stats-summary i.fa-calendar-alt {
+    color: #2da0a8; /* Bleu pour total */
+}
+
+.stats-summary i.fa-check-circle {
+    color: #28a745; /* Green for completed */
+}
+
+.stats-summary i.fa-clock {
+    color: #ffc107; /* Yellow/orange for upcoming */
+}
+
+.stats-summary span {
+    font-weight: 600;
+    color: #374151;
+}
+
+/* User Info in Header */
+.user-info {
+    color: var(--text-secondary);
+    font-size: 14px;
+    margin-top: 5px;
+    font-weight: 400;
+}
+
+
+.welcome-content p {
+    margin-bottom: 20px;
+    opacity: 0.9;
+    line-height: 1.6;
+}
+
+.stats-summary {
+    display: flex;
+    gap: 30px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.stat-item {
+    text-align: center;
+    background: var(--bg-secondary) !important;
+    padding: 25px 30px;
+    border-radius: 15px;
+    min-width: 120px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    border: 2px solid #f0f0f0;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.stat-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2);
+}
+
+.stat-number {
+    display: block;
+    font-size: 40px;
+    font-weight: 900;
+    margin-bottom: 10px;
+    color: #374151;
+    text-shadow: none;
+}
+
+.stat-label {
+    font-size: 14px;
+    font-weight: 700;
+    color: #374151;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    line-height: 1.3;
+}
+
+/* Filters Section */
+.filters-section {
+    background-color: var(--card-bg);
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    margin-bottom: 30px;
+    transition: background-color 0.3s ease;
+}
+
+.filters-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    align-items: end;
+}
+
+.filter-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.filter-group label {
+    color: var(--text-primary);
+    font-weight: 500;
+    margin-bottom: 8px;
+    font-size: 14px;
+}
+
+.filter-input,
+.filter-select {
+    padding: 10px 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+    font-size: 14px;
+    transition: all 0.3s ease;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.filter-input:focus,
+.filter-select:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 2px rgba(45, 160, 168, 0.1);
+}
+
+.filter-select {
+    cursor: pointer;
+}
+
+/* Loading State */
+.loading-state {
+    text-align: center;
+    padding: 60px 20px;
+    background-color: var(--card-bg);
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+}
+
+.loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid var(--border-color);
+    border-top: 4px solid var(--accent-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 20px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Error State */
+.error-state {
+    text-align: center;
+    padding: 60px 20px;
+    background-color: var(--card-bg);
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+}
+
+.error-content i {
+    font-size: 48px;
+    color: #dc3545;
+    margin-bottom: 20px;
+}
+
+.error-content h3 {
+    color: var(--text-primary);
+    margin-bottom: 10px;
+    font-size: 20px;
+}
+
+.error-content p {
+    color: var(--text-secondary);
+    margin-bottom: 20px;
+}
+
+/* Appointments List */
+.appointments-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.appointment-card {
+    background-color: var(--card-bg);
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    padding: 25px;
+    transition: all 0.3s ease;
+    border-left: 4px solid var(--accent-color);
+}
+
+.appointment-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.appointment-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 15px;
+}
+
+.appointment-title {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.appointment-title h3 {
+    color: var(--text-primary);
+    margin: 0;
+    font-size: 18px;
+}
+
+.status-badge {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.status-completed {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.status-cancelled {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+.status-missed {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+.status-upcoming {
+    background-color: #cce5ff;
+    color: #004085;
+}
+
+.appointment-details {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.detail-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+
+.detail-item i {
+    color: var(--accent-color);
+    width: 16px;
+}
+
+.appointment-reason {
+    background-color: var(--bg-secondary);
+    padding: 12px;
+    border-radius: 6px;
+    margin-bottom: 15px;
+}
+
+.appointment-reason p {
+    margin: 0;
+    color: var(--text-primary);
+    font-size: 14px;
+}
+
+.appointment-reason strong {
+    color: var(--accent-color);
+}
+
+.appointment-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: 80px 20px;
+    background-color: var(--card-bg);
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+}
+
+.empty-content i {
+    font-size: 64px;
+    color: var(--text-secondary);
+    margin-bottom: 20px;
+    opacity: 0.5;
+}
+
+.empty-content h3 {
+    color: var(--text-primary);
+    margin-bottom: 10px;
+    font-size: 20px;
+}
+
+.empty-content p {
+    color: var(--text-secondary);
+}
+
+/* Load More */
+.load-more-container {
+    text-align: center;
+    margin-top: 30px;
+}
+
+.load-more-btn {
+    padding: 12px 30px;
+    font-size: 16px;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.load-more-btn.loading {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+.load-more-btn.loading i {
+    animation: spin 1s linear infinite;
+}
+
+/* Modal Styles */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    animation: fadeIn 0.3s ease;
+}
+
+.modal-content {
+    background-color: var(--card-bg);
+    margin: 5% auto;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    animation: slideIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateY(-50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.modal-header {
+    padding: 20px 30px;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-header h3 {
+    color: var(--text-primary);
+    font-size: 20px;
+    font-weight: 600;
+    margin: 0;
+}
+
+.modal-close {
+    color: var(--text-secondary);
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.modal-close:hover {
+    color: var(--accent-color);
+}
+
+.modal-body {
+    padding: 30px;
+}
+
+/* Appointment Info in Modal */
+.appointment-info {
+    background-color: var(--bg-secondary);
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 25px;
+}
+
+.appointment-info h4 {
+    color: var(--text-primary);
+    margin: 0 0 5px 0;
+    font-size: 16px;
+}
+
+.appointment-info p {
+    color: var(--text-secondary);
+    margin: 2px 0;
+    font-size: 14px;
+}
+
+/* Reschedule Form */
+.reschedule-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.reschedule-form .form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.reschedule-form label {
+    color: var(--text-primary);
+    font-weight: 500;
+    margin-bottom: 8px;
+    font-size: 14px;
+}
+
+.reschedule-form input,
+.reschedule-form select,
+.reschedule-form textarea {
+    padding: 10px 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+    font-size: 14px;
+    transition: all 0.3s ease;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.reschedule-form input:focus,
+.reschedule-form select:focus,
+.reschedule-form textarea:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 2px rgba(45, 160, 168, 0.1);
+}
+
+.reschedule-form select {
+    cursor: pointer;
+}
+
+.modal-actions {
+    display: flex;
+    gap: 15px;
+    justify-content: flex-end;
+    margin-top: 10px;
+}
+
+/* Toast Notifications */
+.toast {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 15px 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 1001;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    animation: slideInRight 0.3s ease;
+    max-width: 400px;
+}
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.success-toast {
+    background-color: #d4edda;
+    border: 1px solid #c3e6cb;
+    color: #155724;
+}
+
+.success-toast i {
+    color: #28a745;
+}
+
+/* Responsive Design for Welcome Section */
+
+
+@media (max-width: 768px) {
+    .history-content {
+        padding: 20px;
+    }
+
+    .stats-summary {
+        padding: 12px 15px;
+        font-size: 13px;
+        margin-bottom: 20px;
+    }
+
+    .filters-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+    .appointment-details {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+
+    .appointment-header {
+        flex-direction: column;
+        gap: 15px;
+        align-items: flex-start;
+    }
+
+    .appointment-actions {
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .modal-content {
+        margin: 10px;
+        width: calc(100% - 20px);
+    }
+
+    .modal-body {
+        padding: 20px;
+    }
+
+    .modal-actions {
+        flex-direction: column;
+    }
+
+    .modal-actions button {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .appointment-card {
+        padding: 20px;
+    }
+
+    .status-badge {
+        font-size: 11px;
+        padding: 3px 8px;
+    }
+
+    .toast {
+        left: 10px;
+        right: 10px;
+        max-width: none;
+    }
+}
+
+/* Dark Theme Adjustments */
+[data-theme="dark"] .modal {
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+[data-theme="dark"] .stats-summary {
+    background: #2d2d2d !important;
+    color: #ffffff;
+}
+
+[data-theme="dark"] .stats-summary span {
+    color: #add8e6;
+}
+
+
+

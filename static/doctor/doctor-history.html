@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="doctor-dashboard.css">
+    <link rel="stylesheet" href="history.css">
+    <title>MediSync - Consultation History</title>
+</head>
+<body>
+    <div class="dashboard">
+        <!-- Left Navbar -->
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <img src="../login/Logo_Medisync.png" alt="MediSync Logo" class="logo">
+            </div>
+
+            <ul class="sidebar-menu">
+                <li class="ripple tooltip nav-item" data-tooltip="Dashboard Overview" data-page="dashboard">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>Dashboard</span>
+                </li>
+                <li class="ripple tooltip nav-item" data-tooltip="Set Availability" data-page="availability">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Availability</span>
+                </li>
+                <li class="active ripple tooltip nav-item" data-tooltip="Consultation History" data-page="history">
+                    <i class="fas fa-history"></i>
+                    <span>History</span>
+                </li>
+                <li class="ripple tooltip nav-item" data-tooltip="Account Settings" data-page="settings">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                </li>
+            </ul>
+
+            <!-- Doctor Profile Section -->
+            <div class="patient-profile">
+                <div class="avatar-img">
+                    <span></span>
+                </div>
+                <div class="patient-info">
+                    <h4></h4>
+                    <p>Doctor</p>
+                </div>
+            </div>
+
+            <div class="sidebar-footer">
+                <div class="theme-toggle">
+                    <input type="checkbox" id="theme-switch">
+                    <label for="theme-switch" class="theme-toggle-btn">
+                        <i class="fas fa-moon"></i>
+                        <i class="fas fa-sun"></i>
+                        <span class="ball"></span>
+                    </label>
+                </div>
+                <button class="logout-btn ripple tooltip" data-tooltip="Sign Out">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </button>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="header">
+                <div>
+                    <h1>Consultation History</h1>
+                    <p class="user-info"></p>
+                </div>
+                <div class="header-actions">
+                    <div class="notifications">
+                        <i class="fas fa-bell"></i>
+                    </div>
+                </div>
+            </header>
+
+            <div class="history-content">
+                <!-- Stats Summary -->
+                <div class="stats-summary" style="background: #f8f9fa !important;">
+                    <i class="fas fa-user-md"></i> <span id="total-appointments">0</span> Total |
+                    <i class="fas fa-check-circle"></i> <span id="completed-appointments">0</span> Completed |
+                    <i class="fas fa-clock"></i> <span id="upcoming-appointments">0</span> Upcoming
+                </div>
+
+                <!-- Filters -->
+                <section class="filters-section">
+                    <div class="filters-grid">
+                        <div class="filter-group">
+                            <label for="search-input">Search</label>
+                            <input type="text" id="search-input" placeholder="Patient, specialty..." class="filter-input">
+                        </div>
+
+                        <div class="filter-group">
+                            <label for="month-filter">Month</label>
+                            <select id="month-filter" class="filter-select">
+                                <option value="">All months</option>
+                                <option value="01">January</option>
+                                <option value="02">February</option>
+                                <option value="03">March</option>
+                                <option value="04">April</option>
+                                <option value="05">May</option>
+                                <option value="06">June</option>
+                                <option value="07">July</option>
+                                <option value="08">August</option>
+                                <option value="09">September</option>
+                                <option value="10">October</option>
+                                <option value="11">November</option>
+                                <option value="12">December</option>
+                            </select>
+                        </div>
+
+                        <div class="filter-group">
+                            <label for="year-filter">Year</label>
+                            <select id="year-filter" class="filter-select">
+                                <option value="">All years</option>
+                                <option value="2026">2026</option>
+                                <option value="2025">2025</option>
+                                <option value="2024">2024</option>
+                                <option value="2023">2023</option>
+                            </select>
+                        </div>
+
+                        <div class="filter-group">
+                            <button id="clear-filters" class="btn-secondary">Clear</button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Loading State -->
+                <div id="loading-state" class="loading-state" style="display: none;">
+                    <div class="loading-spinner"></div>
+                    <p>Loading your history...</p>
+                </div>
+
+                <!-- Error State -->
+                <div id="error-state" class="error-state" style="display: none;">
+                    <div class="error-content">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <h3>Loading Error</h3>
+                        <p>Unable to load consultation history.</p>
+                        <button id="retry-btn" class="btn-primary">Retry</button>
+                    </div>
+                </div>
+
+                <!-- Consultations List -->
+                <section id="appointments-list" class="appointments-list">
+                    <!-- Consultations will be loaded here -->
+                </section>
+
+                <!-- Empty State -->
+                <div id="empty-state" class="empty-state" style="display: none;">
+                    <div class="empty-content">
+                        <i class="fas fa-calendar-times"></i>
+                        <h3>No consultations found</h3>
+                        <p>No consultations found matching your criteria.</p>
+                    </div>
+                </div>
+
+                <!-- Load More Button -->
+                <div id="load-more-container" class="load-more-container" style="display: none;">
+                    <button id="load-more-btn" class="btn-primary load-more-btn">
+                        <i class="fas fa-plus"></i>
+                        Load More
+                    </button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Reschedule Modal -->
+    <div id="reschedule-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Reschedule Consultation</h3>
+                <span class="modal-close" id="modal-close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div id="modal-appointment-info" class="appointment-info">
+                    <!-- Consultation info will be loaded here -->
+                </div>
+
+                <form id="reschedule-form" class="reschedule-form">
+                    <div class="form-group">
+                        <label for="reschedule-date">New Date</label>
+                        <input type="date" id="reschedule-date" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="reschedule-time">New Time</label>
+                        <select id="reschedule-time" required>
+                            <option value="">Choose a time</option>
+                            <option value="09:00">09:00</option>
+                            <option value="09:30">09:30</option>
+                            <option value="10:00">10:00</option>
+                            <option value="10:30">10:30</option>
+                            <option value="11:00">11:00</option>
+                            <option value="14:00">14:00</option>
+                            <option value="14:30">14:30</option>
+                            <option value="15:00">15:00</option>
+                            <option value="15:30">15:30</option>
+                            <option value="16:00">16:00</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="reschedule-reason">Reason (optional)</label>
+                        <textarea id="reschedule-reason" placeholder="Briefly explain..." rows="3"></textarea>
+                    </div>
+
+                    <div class="modal-actions">
+                        <button type="button" id="cancel-reschedule" class="btn-secondary">Cancel</button>
+                        <button type="submit" class="btn-primary">Reschedule</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Toast -->
+    <div id="success-toast" class="toast success-toast" style="display: none;">
+        <i class="fas fa-check-circle"></i>
+        <span>Changes saved</span>
+    </div>
+
+    <script src="doctor-dashboard.js"></script>
+    <script src="history.js"></script>
+</body>
+</html>
