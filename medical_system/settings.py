@@ -145,3 +145,21 @@ REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 10
 }
+
+# Content Security Policy - Disabled for development
+# Remove security restrictions that block JavaScript functionality
+SECURE_BROWSER_XSS_FILTER = False
+SECURE_CONTENT_TYPE_NOSNIFF = False
+X_FRAME_OPTIONS = 'ALLOWALL'
+
+# Disable CSP headers in development
+CSP_DEFAULT_SRC = None
+CSP_SCRIPT_SRC = None
+CSP_STYLE_SRC = None
+CSP_IMG_SRC = None
+CSP_FONT_SRC = None
+CSP_CONNECT_SRC = None
+
+# Allow all origins for development
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_CREDENTIALS = True

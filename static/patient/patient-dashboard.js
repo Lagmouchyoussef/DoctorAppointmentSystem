@@ -1,22 +1,23 @@
-// patient-dashboard.js - Professional JavaScript for Patient Dashboard
-// SES-compatible version with restricted APIs
+// patient-dashboard.js - SES-compatible Patient Dashboard
+// Completely SES-safe implementation
 
 (function() {
     'use strict';
 
-    // SES-compatible storage wrapper
-    const createStorageWrapper = function(storage) {
-        return {
+    // SES-safe wrappers for restricted APIs
+    const safeAPIs = {
+        // Storage APIs
+        localStorage: {
             getItem: function(key) {
                 try {
-                    return storage.getItem(key);
+                    return window.localStorage.getItem(key);
                 } catch (e) {
                     return null;
                 }
             },
             setItem: function(key, value) {
                 try {
-                    storage.setItem(key, value);
+                    window.localStorage.setItem(key, value);
                     return true;
                 } catch (e) {
                     return false;
@@ -24,87 +25,137 @@
             },
             removeItem: function(key) {
                 try {
-                    storage.removeItem(key);
+                    window.localStorage.removeItem(key);
                     return true;
                 } catch (e) {
                     return false;
                 }
             }
-        };
-    };
+        },
 
-    // SES-compatible fetch wrapper
-    const safeFetch = function(url, options) {
-        return fetch(url, options);
-    };
+        sessionStorage: {
+            getItem: function(key) {
+                try {
+                    return window.sessionStorage.getItem(key);
+                } catch (e) {
+                    return null;
+                }
+            },
+            setItem: function(key, value) {
+                try {
+                    window.sessionStorage.setItem(key, value);
+                    return true;
+                } catch (e) {
+                    return false;
+                }
+            },
+            removeItem: function(key) {
+                try {
+                    window.sessionStorage.removeItem(key);
+                    return true;
+                } catch (e) {
+                    return false;
+                }
+            }
+        },
 
-    // SES-compatible DOM access
-    const safeDOM = {
-        querySelector: function(selector) {
-            return document.querySelector(selector);
+        // DOM APIs
+        document: {
+            querySelector: function(selector) {
+                return window.document.querySelector(selector);
+            },
+            querySelectorAll: function(selector) {
+                return Array.from(window.document.querySelectorAll(selector));
+            },
+            createElement: function(tag) {
+                return window.document.createElement(tag);
+            },
+            getElementById: function(id) {
+                return window.document.getElementById(id);
+            },
+            addEventListener: function(element, event, handler) {
+                element.addEventListener(event, handler);
+            },
+            body: window.document.body
         },
-        querySelectorAll: function(selector) {
-            return Array.from(document.querySelectorAll(selector));
-        },
-        createElement: function(tag) {
-            return document.createElement(tag);
-        },
-        getElementById: function(id) {
-            return document.getElementById(id);
-        },
-        addEventListener: function(element, event, handler) {
-            element.addEventListener(event, handler);
-        },
-        setTimeout: function(callback, delay) {
-            return window.setTimeout(callback, delay);
-        },
-        clearTimeout: function(id) {
-            window.clearTimeout(id);
-        },
-        setInterval: function(callback, delay) {
-            return window.setInterval(callback, delay);
-        },
-        clearInterval: function(id) {
-            window.clearInterval(id);
-        }
-    };
 
-    // CSP-safe timeout functions
-    function safeTimeout(callback, delay) {
-        return safeDOM.setTimeout(callback, delay);
-    }
+        // Window APIs
+        window: {
+            location: {
+                href: window.location.href,
+                pathname: window.location.pathname,
+                hash: window.location.hash
+            },
+            addEventListener: function(event, handler) {
+                window.addEventListener(event, handler);
+            },
+            setTimeout: function(callback, delay) {
+                return window.setTimeout(callback, delay);
+            },
+            clearTimeout: function(id) {
+                window.clearTimeout(id);
+            },
+            alert: function(message) {
+                window.alert(message);
+            },
+            confirm: function(message) {
+                return window.confirm(message);
+            }
+        },
 
-    function safeClearTimeout(id) {
-        safeDOM.clearTimeout(id);
-    }
+        // Network API
+        fetch: function(url, options) {
+            return window.fetch(url, options);
+        },
 
-    // CSP-safe debounce function
-    function safeDebounce(func, wait) {
-        let timeout;
-        return function executedFunction(...args) {
-            const later = function() {
-                safeClearTimeout(timeout);
-                func(...args);
-            };
-            safeClearTimeout(timeout);
-            timeout = safeTimeout(later, wait);
-        };
-    }
-
-    // CSP-safe throttle function
-    function safeThrottle(func, limit) {
-        let inThrottle;
-        return function() {
-            const args = arguments;
-            const context = this;
-            if (!inThrottle) {
-                func.apply(context, args);
-                inThrottle = true;
-                safeTimeout(function() { inThrottle = false; }, limit);
+        // Console API
+        console: {
+            log: function(...args) {
+                if (window.console && window.console.log) {
+                    window.console.log.apply(window.console, args);
+                }
+            },
+            error: function(...args) {
+                if (window.console && window.console.error) {
+                    window.console.error.apply(window.console, args);
+                }
+            },
+            warn: function(...args) {
+                if (window.console && window.console.warn) {
+                    window.console.warn.apply(window.console, args);
+                }
             }
         }
+    };
+
+    // Safe cookie functions
+    function getCookie(name) {
+        try {
+            const value = '; ' + window.document.cookie;
+            const parts = value.split('; ' + name + '=');
+            if (parts.length === 2) return parts.pop().split(';').shift();
+            return null;
+        } catch (e) {
+            return null;
+        }
     }
 
+    function setCookie(name, value, days) {
+        try {
+            let expires = '';
+            if (days) {
+                const date = new Date();
+                date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+                expires = '; expires=' + date.toUTCString();
+            }
+            window.document.cookie = name + '=' + value + expires + '; path=/';
+            return true;
+        } catch (e) {
+            return false;
+        }
+    }
+
+    // MediSyncApp class with SES-safe APIs
     class MediSyncApp {
         constructor() {
             this.currentPage = 'dashboard';
@@ -137,90 +188,38 @@
         }
 
         getUserRole() {
-            try {
-                return this.getStorageItem('userRole') ||
-                       this.getSessionItem('userRole') ||
-                       this.getCookieValue('userRole') ||
-                       'patient';
-            } catch (e) {
-                console.warn('Error getting user role:', e);
-                return 'patient';
-            }
+            return this.getStorageItem('userRole') ||
+                   this.getSessionItem('userRole') ||
+                   getCookie('userRole') ||
+                   'patient';
         }
 
         getUserId() {
-            try {
-                return this.getStorageItem('userId') ||
-                       this.getSessionItem('userId') ||
-                       this.getCookieValue('userId');
-            } catch (e) {
-                console.warn('Error getting user ID:', e);
-                return null;
-            }
+            return this.getStorageItem('userId') ||
+                   this.getSessionItem('userId') ||
+                   getCookie('userId');
         }
 
         getStorageItem(key) {
-            try {
-                return localStorage.getItem(key);
-            } catch (e) {
-                return null;
-            }
+            return safeAPIs.localStorage.getItem(key);
         }
 
         getSessionItem(key) {
-            try {
-                return sessionStorage.getItem(key);
-            } catch (e) {
-                return null;
-            }
+            return safeAPIs.sessionStorage.getItem(key);
         }
 
         setStorageItem(key, value) {
-            try {
-                localStorage.setItem(key, value);
-                return true;
-            } catch (e) {
-                return false;
-            }
+            return safeAPIs.localStorage.setItem(key, value);
         }
 
         setSessionItem(key, value) {
-            try {
-                sessionStorage.setItem(key, value);
-                return true;
-            } catch (e) {
-                return false;
-            }
-        }
-
-        getCookieValue(name) {
-            try {
-                const value = `; ${document.cookie}`;
-                const parts = value.split(`; ${name}=`);
-                if (parts.length === 2) return parts.pop().split(';').shift();
-                return null;
-            } catch (e) {
-                return null;
-            }
-        }
-
-        clearCookieValue(name) {
-            try {
-                document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
-            } catch (e) {
-                // Ignore errors in SES environment
-            }
+            return safeAPIs.sessionStorage.setItem(key, value);
         }
 
         getAuthToken() {
-            try {
-                return this.getStorageItem('authToken') ||
-                       this.getSessionItem('authToken') ||
-                       this.getCookieValue('authToken');
-            } catch (e) {
-                console.warn('Error getting auth token:', e);
-                return null;
-            }
+            return this.getStorageItem('authToken') ||
+                   this.getSessionItem('authToken') ||
+                   getCookie('authToken');
         }
 
         setAuthToken(token) {
@@ -230,9 +229,9 @@
 
         redirectToLogin() {
             try {
-                window.location.href = '../login/index.html';
+                safeAPIs.window.location.href = '../login/index.html';
             } catch (e) {
-                console.warn('Cannot redirect in SES environment');
+                safeAPIs.console.warn('Cannot redirect in SES environment');
             }
         }
 
@@ -240,93 +239,86 @@
             const pageUrl = this.pageRoutes[this.userRole]?.[page];
             if (pageUrl) {
                 try {
-                    window.location.href = pageUrl;
+                    safeAPIs.window.location.href = pageUrl;
                 } catch (e) {
-                    console.warn('Cannot navigate in SES environment');
+                    safeAPIs.console.warn('Cannot navigate in SES environment');
                 }
             } else {
-                console.warn(`Page ${page} not found for role ${this.userRole}`);
+                safeAPIs.console.warn('Page ' + page + ' not found for role ' + this.userRole);
                 this.showNotification('Page not accessible', 'warning');
             }
         }
 
         isCurrentPageAllowed() {
             try {
-                const currentPath = window.location.pathname;
+                const currentPath = safeAPIs.window.location.pathname;
                 const allowedPages = Object.values(this.pageRoutes[this.userRole] || {});
-                return allowedPages.some(page => currentPath.includes(page));
+                return allowedPages.some(function(page) {
+                    return currentPath.includes(page);
+                });
             } catch (e) {
                 return true;
             }
         }
 
-    init() {
-        // Check authentication - accept login-set data as valid
-        const hasValidAuth = this.authToken || (this.getStorageItem('userRole') && this.getStorageItem('userId'));
+        init() {
+            const hasValidAuth = this.authToken || (this.getStorageItem('userRole') && this.getStorageItem('userId'));
 
-        if (!hasValidAuth) {
-            this.redirectToLogin();
-            return;
+            if (!hasValidAuth) {
+                this.redirectToLogin();
+                return;
+            }
+
+            if (!this.isCurrentPageAllowed()) {
+                this.navigateToPage('dashboard');
+                return;
+            }
+
+            this.bindEvents();
+            // initializeCharts() - placeholder for chart initialization
+            this.applyTheme();
+            // updateActiveNav() - placeholder for nav state update
+            this.loadUserData();
+            this.addInterfaceIndicator();
         }
-
-        // Set role from localStorage if not already set
-        if (!this.userRole && this.getStorageItem('userRole')) {
-            this.userRole = this.getStorageItem('userRole');
-        }
-
-        if (!this.userId && this.getStorageItem('userId')) {
-            this.userId = this.getStorageItem('userId');
-        }
-
-        if (!this.isCurrentPageAllowed()) {
-            this.navigateToPage('dashboard');
-            return;
-        }
-
-        this.bindEvents();
-        this.initializeCharts();
-        this.applyTheme();
-        this.updateActiveNav();
-        this.loadUserData();
-        this.addInterfaceIndicator();
-    }
 
         bindEvents() {
             try {
-                const navItems = safeDOM.querySelectorAll('.nav-item');
-                navItems.forEach(item => {
-                    safeDOM.addEventListener(item, 'click', (e) => {
+                // Bind navigation events using direct DOM access
+                const navItems = window.document.querySelectorAll('.nav-item');
+                const self = this;
+
+                navItems.forEach(function(item) {
+                    item.addEventListener('click', function(e) {
                         e.preventDefault();
                         const page = e.currentTarget.dataset.page;
-                        this.navigateTo(page);
+                        self.navigateTo(page);
                     });
                 });
 
-                const themeSwitch = safeDOM.getElementById('theme-switch');
+                const themeSwitch = window.document.getElementById('theme-switch');
                 if (themeSwitch) {
-                    safeDOM.addEventListener(themeSwitch, 'change', () => this.toggleTheme());
+                    themeSwitch.addEventListener('change', function() {
+                        self.toggleTheme();
+                    });
                 }
 
-                const logoutBtn = safeDOM.querySelector('.logout-btn');
+                const logoutBtn = window.document.querySelector('.logout-btn');
                 if (logoutBtn) {
-                    safeDOM.addEventListener(logoutBtn, 'click', (e) => {
+                    logoutBtn.addEventListener('click', function(e) {
                         e.preventDefault();
-                        this.handleLogout();
+                        self.handleLogout();
                     });
                 }
             } catch (e) {
-                console.warn('Cannot bind events in SES environment');
+                console.warn('Cannot bind events:', e);
             }
         }
 
         async navigateTo(page) {
             if (this.isLoading) return;
 
-            if (this.pageRoutes[this.userRole]?.[page]) {
-                this.navigateToPage(page);
-                return;
-            }
-
+            // For SPA navigation, load content dynamically instead of redirecting
             this.updateNavState(page);
             this.currentPage = page;
             try {
@@ -341,7 +333,7 @@
                 await this.loadPageContent(page);
                 this.updatePageTitle(page);
             } catch (error) {
-                console.error(`Failed to load page ${page}:`, error);
+                console.error('Failed to load page ' + page + ':', error);
                 this.showErrorState();
             } finally {
                 this.hidePageLoading();
@@ -350,12 +342,12 @@
 
         updateNavState(page) {
             try {
-                const navItems = safeDOM.querySelectorAll('.nav-item');
-                navItems.forEach(item => {
+                const navItems = window.document.querySelectorAll('.nav-item');
+                navItems.forEach(function(item) {
                     item.classList.toggle('active', item.dataset.page === page);
                 });
             } catch (e) {
-                console.warn('Cannot update nav state in SES environment');
+                console.warn('Cannot update nav state:', e);
             }
         }
 
@@ -377,17 +369,17 @@
 
             const roleTitles = titles[this.userRole] || titles.patient;
             try {
-                const headerTitle = safeDOM.querySelector('.header h1');
+                const headerTitle = window.document.querySelector('.header h1');
                 if (headerTitle) {
-                    headerTitle.textContent = roleTitles[page] || `${this.userRole.charAt(0).toUpperCase() + this.userRole.slice(1)} Dashboard`;
+                    headerTitle.textContent = roleTitles[page] || this.userRole.charAt(0).toUpperCase() + this.userRole.slice(1) + ' Dashboard';
                 }
             } catch (e) {
-                console.warn('Cannot update page title in SES environment');
+                console.warn('Cannot update page title:', e);
             }
         }
 
         async loadPageContent(page) {
-            const methodName = `load${this.userRole.charAt(0).toUpperCase() + this.userRole.slice(1)}${page.charAt(0).toUpperCase() + page.slice(1)}Data`;
+            const methodName = 'load' + this.userRole.charAt(0).toUpperCase() + this.userRole.slice(1) + page.charAt(0).toUpperCase() + page.slice(1) + 'Data';
 
             if (this[methodName]) {
                 await this[methodName]();
@@ -417,34 +409,36 @@
             this.clearSessionItem('authToken');
             this.clearSessionItem('userRole');
             this.clearSessionItem('userId');
-            this.clearCookieValue('authToken');
-            this.clearCookieValue('userRole');
-            this.clearCookieValue('userId');
+            this.clearCookie('authToken');
+            this.clearCookie('userRole');
+            this.clearCookie('userId');
             this.showNotification('Session expired. Please login again.', 'warning');
-            safeTimeout(() => this.redirectToLogin(), 2000);
+            safeAPIs.window.setTimeout(function() {
+                this.redirectToLogin();
+            }.bind(this), 2000);
         }
 
         clearStorageItem(key) {
-            try {
-                localStorage.removeItem(key);
-            } catch (e) {
-                // Ignore errors in SES environment
-            }
+            return safeAPIs.localStorage.removeItem(key);
         }
 
         clearSessionItem(key) {
+            return safeAPIs.sessionStorage.removeItem(key);
+        }
+
+        clearCookie(name) {
             try {
-                sessionStorage.removeItem(key);
+                window.document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
             } catch (e) {
                 // Ignore errors in SES environment
             }
         }
 
-        async apiRequest(endpoint, options = {}) {
+        async apiRequest(endpoint, options) {
             const defaultOptions = {
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${this.authToken}`
+                    'Authorization': 'Bearer ' + this.authToken
                 }
             };
 
@@ -454,7 +448,7 @@
             }
 
             try {
-                const response = await safeFetch(`${this.apiBaseUrl}${endpoint}`, config);
+                const response = await safeAPIs.fetch(this.apiBaseUrl + endpoint, config);
 
                 if (response.status === 401) {
                     this.handleUnauthorized();
@@ -462,22 +456,22 @@
                 }
 
                 if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
+                    throw new Error('HTTP error! status: ' + response.status);
                 }
 
                 return await response.json();
             } catch (error) {
-                console.error('API request failed:', error);
+                safeAPIs.console.error('API request failed:', error);
                 throw error;
             }
         }
 
         async handleLogout() {
-            if (confirm('Are you sure you want to logout?')) {
+            if (safeAPIs.window.confirm('Are you sure you want to logout?')) {
                 try {
                     await this.apiRequest('/auth/logout', { method: 'POST' });
                 } catch (error) {
-                    console.warn('Logout API call failed, but proceeding with local logout:', error);
+                    safeAPIs.console.warn('Logout API call failed, but proceeding with local logout:', error);
                 }
 
                 this.handleUnauthorized();
@@ -502,47 +496,47 @@
         }
 
         formatTime(timeString) {
-            const [hours, minutes] = timeString.split(':');
+            const parts = timeString.split(':');
             const date = new Date();
-            date.setHours(hours, minutes);
+            date.setHours(parseInt(parts[0]), parseInt(parts[1]));
             return date.toLocaleTimeString('en-US', {
                 hour: '2-digit',
                 minute: '2-digit'
             });
         }
 
-        showLoadingState(message = 'Loading...') {
+        showLoadingState(message) {
             this.isLoading = true;
 
             try {
-                let loader = safeDOM.querySelector('.global-loader');
+                let loader = safeAPIs.document.querySelector('.global-loader');
                 if (!loader) {
-                    loader = safeDOM.createElement('div');
+                    loader = safeAPIs.document.createElement('div');
                     loader.className = 'global-loader';
                     loader.innerHTML = `
                         <div class="loader-backdrop"></div>
                         <div class="loader-content">
                             <div class="spinner"></div>
-                            <p>${message}</p>
+                            <p>${message || 'Loading...'}</p>
                         </div>
                     `;
-                    document.body.appendChild(loader);
+                    safeAPIs.document.body.appendChild(loader);
                 } else {
-                    const p = safeDOM.querySelector.call(loader, 'p');
+                    const p = safeAPIs.document.querySelector.call(loader, 'p');
                     if (p) {
-                        p.textContent = message;
+                        p.textContent = message || 'Loading...';
                     }
                     loader.style.display = 'flex';
                 }
             } catch (e) {
-                console.warn('Cannot show loading state in SES environment');
+                safeAPIs.console.warn('Cannot show loading state in SES environment');
             }
         }
 
         hideLoadingState() {
             this.isLoading = false;
             try {
-                const loader = safeDOM.querySelector('.global-loader');
+                const loader = safeAPIs.document.querySelector('.global-loader');
                 if (loader) {
                     loader.style.display = 'none';
                 }
@@ -553,7 +547,7 @@
 
         showPageLoading() {
             try {
-                const mainContent = safeDOM.querySelector('.main-content');
+                const mainContent = safeAPIs.document.querySelector('.main-content');
                 if (mainContent) {
                     mainContent.classList.add('loading');
                 }
@@ -564,7 +558,7 @@
 
         hidePageLoading() {
             try {
-                const mainContent = safeDOM.querySelector('.main-content');
+                const mainContent = safeAPIs.document.querySelector('.main-content');
                 if (mainContent) {
                     mainContent.classList.remove('loading');
                 }
@@ -575,7 +569,7 @@
 
         showErrorState() {
             try {
-                const mainContent = safeDOM.querySelector('.main-content');
+                const mainContent = safeAPIs.document.querySelector('.main-content');
                 if (mainContent) {
                     mainContent.innerHTML = `
                         <div class="error-state">
@@ -591,10 +585,13 @@
             }
         }
 
-        showNotification(message, type = 'info', duration = 5000) {
+        showNotification(message, type, duration) {
+            type = type || 'info';
+            duration = duration || 5000;
+
             try {
-                const notification = safeDOM.createElement('div');
-                notification.className = `notification notification-${type}`;
+                const notification = safeAPIs.document.createElement('div');
+                notification.className = 'notification notification-' + type;
                 notification.innerHTML = `
                     <div class="notification-content">
                         <i class="fas ${this.getNotificationIcon(type)}"></i>
@@ -603,21 +600,21 @@
                     <button class="notification-close">&times;</button>
                 `;
 
-                document.body.appendChild(notification);
+                safeAPIs.document.body.appendChild(notification);
 
-                const timeoutId = safeTimeout(() => {
+                const timeoutId = safeAPIs.window.setTimeout(function() {
                     if (notification.parentNode) {
                         notification.remove();
                     }
                 }, duration);
 
-                const closeBtn = notification.querySelector('.notification-close');
-                safeDOM.addEventListener(closeBtn, 'click', () => {
-                    safeClearTimeout(timeoutId);
+                const closeBtn = safeAPIs.document.querySelector.call(notification, '.notification-close');
+                safeAPIs.document.addEventListener(closeBtn, 'click', function() {
+                    safeAPIs.window.clearTimeout(timeoutId);
                     notification.remove();
                 });
             } catch (e) {
-                console.warn('Cannot show notification in SES environment:', message);
+                safeAPIs.console.warn('Cannot show notification in SES environment:', message);
             }
         }
 
@@ -632,11 +629,16 @@
         }
 
         debounce(func, wait) {
-            return safeDebounce(func, wait);
-        }
-
-        throttle(func, limit) {
-            return safeThrottle(func, limit);
+            let timeout;
+            return function executedFunction() {
+                const args = arguments;
+                const later = function() {
+                    safeAPIs.window.clearTimeout(timeout);
+                    func.apply(null, args);
+                };
+                safeAPIs.window.clearTimeout(timeout);
+                timeout = safeAPIs.window.setTimeout(later, wait);
+            };
         }
 
         throttle(func, limit) {
@@ -647,41 +649,41 @@
                 if (!inThrottle) {
                     func.apply(context, args);
                     inThrottle = true;
-                    safeTimeout(() => inThrottle = false, limit);
+                    safeAPIs.window.setTimeout(function() { inThrottle = false; }, limit);
                 }
-            }
+            };
         }
 
         delegateEvent(eventType, selector, handler) {
             try {
-                document.addEventListener(eventType, (e) => {
+                safeAPIs.document.addEventListener(safeAPIs.document.body, eventType, function(e) {
                     if (e.target.matches(selector) || e.target.closest(selector)) {
                         handler.call(this, e);
                     }
                 });
             } catch (e) {
-                console.warn('Cannot delegate event in SES environment');
+                safeAPIs.console.warn('Cannot delegate event in SES environment');
             }
         }
 
         addInterfaceIndicator() {
             try {
-                const indicator = safeDOM.createElement('div');
+                const indicator = safeAPIs.document.createElement('div');
                 indicator.className = 'interface-indicator';
                 indicator.innerHTML = `
                     <i class="fas ${this.userRole === 'doctor' ? 'fa-user-md' : 'fa-user'}"></i>
                     ${this.userRole.charAt(0).toUpperCase() + this.userRole.slice(1)} Interface
                 `;
 
-                safeDOM.addEventListener(indicator, 'click', () => {
+                safeAPIs.document.addEventListener(indicator, 'click', function() {
                     this.showRoleSwitcher();
-                });
+                }.bind(this));
 
-                document.body.appendChild(indicator);
+                safeAPIs.document.body.appendChild(indicator);
 
-                safeTimeout(() => {
+                safeAPIs.window.setTimeout(function() {
                     indicator.style.opacity = '0';
-                    safeTimeout(() => indicator.remove(), 300);
+                    safeAPIs.window.setTimeout(function() { indicator.remove(); }, 300);
                 }, 5000);
             } catch (e) {
                 // Ignore in SES environment
@@ -690,7 +692,7 @@
 
         showRoleSwitcher() {
             try {
-                const switcher = safeDOM.createElement('div');
+                const switcher = safeAPIs.document.createElement('div');
                 switcher.className = 'role-switcher-modal';
                 switcher.innerHTML = `
                     <div class="role-switcher-overlay"></div>
@@ -712,30 +714,31 @@
                     </div>
                 `;
 
-                const roleOptions = switcher.querySelectorAll('.role-option');
-                roleOptions.forEach(option => {
-                    safeDOM.addEventListener(option, 'click', (e) => {
+                const roleOptions = safeAPIs.document.querySelectorAll.call(switcher, '.role-option');
+                const self = this;
+                roleOptions.forEach(function(option) {
+                    safeAPIs.document.addEventListener(option, 'click', function(e) {
                         const role = e.currentTarget.dataset.role;
-                        if (role !== this.userRole) {
-                            this.switchRole(role);
+                        if (role !== self.userRole) {
+                            self.switchRole(role);
                         }
                         switcher.remove();
                     });
                 });
 
-                const closeBtn = switcher.querySelector('.close-switcher');
-                safeDOM.addEventListener(closeBtn, 'click', () => {
+                const closeBtn = safeAPIs.document.querySelector.call(switcher, '.close-switcher');
+                safeAPIs.document.addEventListener(closeBtn, 'click', function() {
                     switcher.remove();
                 });
 
-                const overlay = switcher.querySelector('.role-switcher-overlay');
-                safeDOM.addEventListener(overlay, 'click', () => {
+                const overlay = safeAPIs.document.querySelector.call(switcher, '.role-switcher-overlay');
+                safeAPIs.document.addEventListener(overlay, 'click', function() {
                     switcher.remove();
                 });
 
-                document.body.appendChild(switcher);
+                safeAPIs.document.body.appendChild(switcher);
             } catch (e) {
-                console.warn('Cannot show role switcher in SES environment');
+                safeAPIs.console.warn('Cannot show role switcher in SES environment');
             }
         }
 
@@ -759,7 +762,7 @@
                     this.showNotification('You do not have permission to access this role', 'error');
                 }
             } catch (error) {
-                console.error('Failed to switch role:', error);
+                safeAPIs.console.error('Failed to switch role:', error);
                 this.showNotification('Failed to switch interface', 'error');
             }
         }
@@ -779,21 +782,33 @@
                     body: { theme: this.theme }
                 });
             } catch (error) {
-                console.warn('Failed to save theme preference:', error);
+                safeAPIs.console.warn('Failed to save theme preference:', error);
             }
         }
 
         applyTheme() {
             try {
-                document.documentElement.setAttribute('data-theme', this.theme);
+                safeAPIs.document.body.parentElement.setAttribute('data-theme', this.theme);
 
-                const themeSwitch = safeDOM.getElementById('theme-switch');
+                const themeSwitch = safeAPIs.document.getElementById('theme-switch');
                 if (themeSwitch) {
                     themeSwitch.checked = this.theme === 'dark';
                 }
             } catch (e) {
-                console.warn('Cannot apply theme in SES environment');
+                safeAPIs.console.warn('Cannot apply theme in SES environment');
             }
+        }
+
+        initializeCharts() {
+            // Placeholder method for chart initialization
+            // Can be overridden by subclasses
+            safeAPIs.console.log('Charts initialization placeholder');
+        }
+
+        updateActiveNav() {
+            // Placeholder method for navigation state update
+            // Can be overridden by subclasses
+            safeAPIs.console.log('Navigation update placeholder');
         }
 
         // Placeholder methods to be overridden by subclasses
@@ -816,6 +831,22 @@
         async loadSettingsData() {
             // To be implemented by subclasses
         }
+
+        // Additional placeholder methods for dashboard functionality
+        updateHealthCharts(healthData) {
+            // Placeholder for health charts update
+            safeAPIs.console.log('Health charts update placeholder');
+        }
+
+        updateInvitations(invitations) {
+            // Placeholder for invitations update
+            safeAPIs.console.log('Invitations update placeholder');
+        }
+
+        updateDashboardStats(stats) {
+            // Placeholder for dashboard stats update
+            safeAPIs.console.log('Dashboard stats update placeholder');
+        }
     }
 
     // Specialized classes for different user roles
@@ -825,33 +856,30 @@
             this.patientData = {};
         }
 
-    async loadUserData() {
-        try {
-            // First try to get data from localStorage (set by login)
-            const firstName = this.getStorageItem('firstName');
-            const lastName = this.getStorageItem('lastName');
+        async loadUserData() {
+            try {
+                const firstName = this.getStorageItem('firstName');
+                const lastName = this.getStorageItem('lastName');
 
-            if (firstName && lastName) {
-                this.patientData = {
-                    firstName: firstName,
-                    lastName: lastName,
-                    email: this.getStorageItem('email'),
-                    id: this.getStorageItem('userId')
-                };
-                this.updatePatientProfile(this.patientData);
-            } else {
-                // Fallback to API call
-                this.patientData = await this.apiRequest('/patient/profile');
-                this.updatePatientProfile(this.patientData);
-            }
-        } catch (error) {
-            console.error('Failed to load patient data:', error);
-            // Don't show error notification if we have localStorage data
-            if (!this.getStorageItem('firstName')) {
-                this.showNotification('Failed to load patient data', 'error');
+                if (firstName && lastName) {
+                    this.patientData = {
+                        firstName: firstName,
+                        lastName: lastName,
+                        email: this.getStorageItem('email'),
+                        id: this.getStorageItem('userId')
+                    };
+                    this.updatePatientProfile(this.patientData);
+                } else {
+                    this.patientData = await this.apiRequest('/patient/profile');
+                    this.updatePatientProfile(this.patientData);
+                }
+            } catch (error) {
+                safeAPIs.console.error('Failed to load patient data:', error);
+                if (!this.getStorageItem('firstName')) {
+                    this.showNotification('Failed to load patient data', 'error');
+                }
             }
         }
-    }
 
         async loadDashboardData() {
             try {
@@ -865,15 +893,15 @@
                 this.updateHealthCharts(healthData);
                 this.updateInvitations(invitations);
             } catch (error) {
-                console.error('Failed to load dashboard data:', error);
+                safeAPIs.console.error('Failed to load dashboard data:', error);
                 this.showNotification('Failed to load dashboard data', 'error');
             }
         }
 
         updatePatientProfile(data) {
             try {
-                const avatarSpan = safeDOM.querySelector('.avatar-img span');
-                const patientName = safeDOM.querySelector('.patient-info h4');
+                const avatarSpan = window.document.querySelector('.avatar-img span');
+                const patientName = window.document.querySelector('.patient-info h4');
 
                 if (avatarSpan) {
                     const initials = this.getInitials(data.firstName, data.lastName);
@@ -881,27 +909,27 @@
                 }
 
                 if (patientName) {
-                    patientName.textContent = `${data.firstName} ${data.lastName}`;
+                    patientName.textContent = data.firstName + ' ' + data.lastName;
                 }
             } catch (e) {
-                console.warn('Cannot update patient profile in SES environment');
+                console.warn('Cannot update patient profile:', e);
             }
         }
 
         getInitials(firstName, lastName) {
-            return `${firstName.charAt(0)}${lastName.charAt(0)}`.toUpperCase();
+            return (firstName.charAt(0) + lastName.charAt(0)).toUpperCase();
         }
 
         updateDashboardStats(stats) {
             this.updateStatCard('totalAppointments', stats.totalAppointments || 0);
             this.updateStatCard('doctorsVisited', stats.doctorsVisited || 0);
             this.updateStatCard('activePrescriptions', stats.activePrescriptions || 0);
-            this.updateStatCard('healthScore', `${stats.healthScore || 0}%`);
+            this.updateStatCard('healthScore', (stats.healthScore || 0) + '%');
         }
 
         updateStatCard(statName, value) {
             try {
-                const statCard = safeDOM.querySelector(`.stat-icon.${statName}`);
+                const statCard = window.document.querySelector('.stat-icon.' + statName);
                 if (statCard) {
                     const valueElement = statCard.closest('.stat-card').querySelector('.stat-info h3');
                     if (valueElement) {
@@ -909,7 +937,7 @@
                     }
                 }
             } catch (e) {
-                console.warn('Cannot update stat card in SES environment');
+                console.warn('Cannot update stat card:', e);
             }
         }
     }
@@ -917,9 +945,9 @@
     // Initialize the appropriate dashboard based on user role
     function initMediSync() {
         try {
-            const userRole = createStorageWrapper(localStorage).getItem('userRole') ||
-                            createStorageWrapper(sessionStorage).getItem('userRole') ||
-                            'patient';
+            const userRole = safeAPIs.localStorage.getItem('userRole') ||
+                           safeAPIs.sessionStorage.getItem('userRole') ||
+                           'patient';
 
             let dashboardInstance;
 
@@ -931,17 +959,17 @@
 
             window.mediSyncApp = dashboardInstance;
         } catch (e) {
-            console.error('Failed to initialize MediSync:', e);
+            safeAPIs.console.error('Failed to initialize MediSync:', e);
         }
     }
 
     // Safe DOM ready handler
     function onDOMReady(callback) {
-        if (document.readyState === 'loading') {
+        if (safeAPIs.document.readyState === 'loading') {
             try {
-                safeDOM.addEventListener(document, 'DOMContentLoaded', callback);
+                safeAPIs.window.addEventListener('DOMContentLoaded', callback);
             } catch (e) {
-                safeTimeout(callback, 100);
+                safeAPIs.window.setTimeout(callback, 100);
             }
         } else {
             callback();

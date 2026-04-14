@@ -24,7 +24,7 @@ document.querySelector('.sign-up form').addEventListener('submit', async (e) => 
     return;
   }
 
-  const baseUrl = 'http://127.0.0.1:8001/api/';
+  const baseUrl = '/api/';
   let url, data;
 
   if (role === 'patient') {
@@ -61,11 +61,10 @@ document.querySelector('.sign-up form').addEventListener('submit', async (e) => 
       localStorage.setItem('email', email);
       localStorage.setItem('firstName', firstName);
       localStorage.setItem('lastName', lastName);
-
       if (role === 'patient') {
-        window.location.href = '/static/patient/patient.html';
+        window.location.href = '../patient/patient.html';
       } else {
-        window.location.href = '/static/doctor/doctor.html';
+        window.location.href = '../doctor/doctor.html';
       }
     } else {
       const errorData = await response.json().catch(() => ({}));
@@ -87,14 +86,14 @@ document.querySelector('.sign-in form').addEventListener('submit', async (e) => 
     return;
   }
 
-  const baseUrl = 'http://127.0.0.1:8001/api/';
+  const baseUrl = '/api/';
 
   try {
     // Check if patient
     let response = await fetch(`${baseUrl}patients/?email=${email}`);
     let data = await response.json();
     if (data.results.length > 0) {
-      // Set authentication data
+      // Set authentication data for patient
       localStorage.setItem('authToken', `patient_${data.results[0].id}_${Date.now()}`);
       localStorage.setItem('userRole', 'patient');
       localStorage.setItem('userId', data.results[0].id);
@@ -104,7 +103,7 @@ document.querySelector('.sign-in form').addEventListener('submit', async (e) => 
       localStorage.setItem('lastName', data.results[0].last_name);
 
       alert(`Welcome back, ${data.results[0].first_name}!`);
-      window.location.href = '/static/patient/patient.html';
+      window.location.href = '../patient/patient.html';
       return;
     }
 
@@ -112,7 +111,7 @@ document.querySelector('.sign-in form').addEventListener('submit', async (e) => 
     response = await fetch(`${baseUrl}doctors/?email=${email}`);
     data = await response.json();
     if (data.results.length > 0) {
-      // Set authentication data
+      // Set authentication data for doctor
       localStorage.setItem('authToken', `doctor_${data.results[0].id}_${Date.now()}`);
       localStorage.setItem('userRole', 'doctor');
       localStorage.setItem('userId', data.results[0].id);
@@ -122,7 +121,7 @@ document.querySelector('.sign-in form').addEventListener('submit', async (e) => 
       localStorage.setItem('lastName', data.results[0].last_name);
 
       alert(`Welcome back, Dr. ${data.results[0].first_name}!`);
-      window.location.href = '/static/doctor/doctor.html';
+      window.location.href = '../doctor/doctor.html';
       return;
     }
 
@@ -135,7 +134,7 @@ document.querySelector('.sign-in form').addEventListener('submit', async (e) => 
 
 // Function to create 50 test users
 async function createBatchUsers() {
-  const baseUrl = 'http://127.0.0.1:8001/api/';
+  const baseUrl = '/api/';
   const users = [];
   const errors = [];
 
@@ -195,5 +194,55 @@ async function createBatchUsers() {
   }
 }
 
-// Expose function to console for testing
+// Function to create test users for demo
+async function createTestUsers() {
+  const baseUrl = '/api/';
+
+  // Create test patient
+  try {
+    const patientResponse = await fetch(`${baseUrl}patients/`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        first_name: 'John',
+        last_name: 'Doe',
+        email: 'patient@test.com'
+      })
+    });
+
+    if (patientResponse.ok) {
+      console.log('Test patient created successfully');
+    } else {
+      console.log('Test patient creation failed');
+    }
+  } catch (error) {
+    console.error('Error creating test patient:', error);
+  }
+
+  // Create test doctor
+  try {
+    const doctorResponse = await fetch(`${baseUrl}doctors/`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        first_name: 'Dr',
+        last_name: 'Smith',
+        email: 'doctor@test.com'
+      })
+    });
+
+    if (doctorResponse.ok) {
+      console.log('Test doctor created successfully');
+    } else {
+      console.log('Test doctor creation failed');
+    }
+  } catch (error) {
+    console.error('Error creating test doctor:', error);
+  }
+
+  alert('Test users creation attempted. Check console for results.');
+}
+
+// Expose functions to console for testing
 window.createBatchUsers = createBatchUsers;
+window.createTestUsers = createTestUsers;
