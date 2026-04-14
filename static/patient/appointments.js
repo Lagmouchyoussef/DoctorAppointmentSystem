@@ -113,7 +113,7 @@ class AppointmentCalendar {
         await this.loadDoctors();
     }
 
-    async loadDoctors() {
+async loadDoctors() {
         const baseUrl = 'http://127.0.0.1:8001/api/';
         try {
             const response = await fetch(`${baseUrl}doctors/`);

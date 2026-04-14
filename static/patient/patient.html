@@ -17,19 +17,19 @@
             </div>
 
             <ul class="sidebar-menu">
-                <li class="active ripple tooltip nav-item" data-tooltip="Dashboard Overview" data-page="dashboard" onclick="if (this.dataset.page === 'dashboard') window.location.href='/static/patient/patient.html'; else window.location.href='/static/patient/' + this.dataset.page + '.html';">
+                 <li class="active ripple tooltip nav-item" data-tooltip="Dashboard Overview" data-page="dashboard">
                     <i class="fas fa-tachometer-alt"></i>
                     <span>Dashboard</span>
                 </li>
-                <li class="ripple tooltip nav-item" data-tooltip="Manage Appointments" data-page="appointments" onclick="if (this.dataset.page === 'dashboard') window.location.href='/static/patient/patient.html'; else window.location.href='/static/patient/' + this.dataset.page + '.html';">
+                 <li class="ripple tooltip nav-item" data-tooltip="Manage Appointments" data-page="appointments">
                     <i class="fas fa-calendar-alt"></i>
                     <span>Appointments</span>
                 </li>
-                <li class="ripple tooltip nav-item" data-tooltip="Appointment History" data-page="history" onclick="if (this.dataset.page === 'dashboard') window.location.href='/static/patient/patient.html'; else window.location.href='/static/patient/' + this.dataset.page + '.html';">
+                 <li class="ripple tooltip nav-item" data-tooltip="Appointment History" data-page="history">
                     <i class="fas fa-history"></i>
                     <span>History</span>
                 </li>
-                <li class="ripple tooltip nav-item" data-tooltip="Account Settings" data-page="settings" onclick="if (this.dataset.page === 'dashboard') window.location.href='/static/patient/patient.html'; else window.location.href='/static/patient/' + this.dataset.page + '.html';">
+                 <li class="ripple tooltip nav-item" data-tooltip="Account Settings" data-page="settings">
                     <i class="fas fa-cog"></i>
                     <span>Settings</span>
                 </li>
@@ -55,7 +55,7 @@
                         <span class="ball"></span>
                     </label>
                 </div>
-                <button class="logout-btn ripple tooltip" data-tooltip="Sign Out" onclick="localStorage.clear(); window.location.href='/static/login/index.html'">
+                 <button class="logout-btn ripple tooltip" data-tooltip="Sign Out">
                     <i class="fas fa-sign-out-alt"></i>
                     <span>Logout</span>
                 </button>
@@ -78,7 +78,7 @@
                 <section class="welcome-card">
                     <h2>Welcome to MediSync</h2>
                     <p>Manage your healthcare appointments and medical records.</p>
-                    <button class="btn-primary" onclick="document.getElementById('schedule-modal').style.display='block'">Schedule New Appointment</button>
+                     <button class="btn-primary">Schedule New Appointment</button>
                 </section>
 
                 <!-- Appointment Invitations -->
@@ -298,7 +298,7 @@
                         <i class="fas fa-calendar-plus"></i>
                         <h3>No upcoming appointments</h3>
                         <p>Schedule your first appointment to get started</p>
-                        <button class="btn-primary">Schedule Appointment</button>
+                         <button class="btn-primary">Schedule Appointment</button>
                     </div>
                 </section>
 
@@ -318,19 +318,19 @@
     <!-- Schedule Appointment Modal -->
     <div id="schedule-modal" class="modal" onclick="if(event.target === this) this.style.display='none'">
         <div class="modal-content">
-            <span class="close" onclick="document.getElementById('schedule-modal').style.display='none'">&times;</span>
+            <span class="close">&times;</span>
             <h2>Schedule New Appointment</h2>
-            <form id="schedule-form" onsubmit="document.getElementById('schedule-modal').style.display='none'; alert('Appointment scheduled (simulated)'); return false;">
-                <select id="doctor-select" required>
+            <form id="schedule-form">
+                <select id="doctor-select" name="doctor" required>
                     <option value="">Select Doctor</option>
                 </select>
-                <input type="datetime-local" id="appointment-datetime" required>
-                <textarea id="appointment-reason" placeholder="Reason for appointment" required></textarea>
+                <input type="datetime-local" id="appointment-datetime" name="appointment_date" required>
+                <textarea id="appointment-reason" name="reason" placeholder="Reason for appointment" required></textarea>
                 <button type="submit" class="btn-primary">Schedule</button>
             </form>
         </div>
     </div>
 
-    <script src="patient-dashboard.js?v=5"></script>
+    <script src="patient-dashboard.js?v=8"></script>
 </body>
 </html>

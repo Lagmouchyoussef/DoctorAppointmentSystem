@@ -415,22 +415,48 @@ class SettingsManager {
             saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
             saveBtn.disabled = true;
 
-            // Simulate API call
-            await new Promise(resolve => setTimeout(resolve, 2000));
-
             // Collect form data
             const formData = this.collectFormData();
 
-            // Save to localStorage for persistence
-            Object.keys(formData).forEach(key => {
-                if (typeof formData[key] === 'object') {
-                    localStorage.setItem(`settings_${key}`, JSON.stringify(formData[key]));
-                } else {
-                    localStorage.setItem(`settings_${key}`, formData[key]);
-                }
+            // Send to API
+            const userId = localStorage.getItem('userId');
+            const role = localStorage.getItem('role');
+            const endpoint = role === 'patient' ? 'patients' : 'doctors';
+            const apiUrl = `http://127.0.0.1:8001/api/${endpoint}/${userId}/`;
+
+            const updateData = {
+                first_name: formData['first-name'],
+                last_name: formData['last-name'],
+                email: formData['email']
+            };
+
+            const apiResponse = await fetch(apiUrl, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(updateData)
             });
 
+            if (!apiResponse.ok) {
+                const errorData = await apiResponse.json().catch(() => ({}));
+                throw new Error(errorData.detail || 'Failed to update profile');
+            }
+
+            // Update localStorage
+            localStorage.setItem('firstName', formData['first-name']);
+            localStorage.setItem('lastName', formData['last-name']);
+            localStorage.setItem('email', formData['email']);
             localStorage.setItem('userName', `${formData['first-name']} ${formData['last-name']}`);
+
+            // Save other settings to localStorage
+            Object.keys(formData).forEach(key => {
+                if (key !== 'first-name' && key !== 'last-name' && key !== 'email') {
+                    if (typeof formData[key] === 'object') {
+                        localStorage.setItem(`settings_${key}`, JSON.stringify(formData[key]));
+                    } else {
+                        localStorage.setItem(`settings_${key}`, formData[key]);
+                    }
+                }
+            });
 
             // Show success feedback
             this.showSaveFeedback();
