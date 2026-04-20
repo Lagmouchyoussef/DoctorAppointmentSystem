@@ -8,12 +8,34 @@ class PatientViewSet(viewsets.ModelViewSet):
     queryset = Patient.objects.all().order_by('id')  # type: ignore
     serializer_class = PatientSerializer
 
+    def __init__(self, *args, **kwargs):
+        print("DEBUG: PatientViewSet initialized")
+        super().__init__(*args, **kwargs)
+
     def get_queryset(self):
         queryset = Patient.objects.all()  # type: ignore
         email = self.request.query_params.get('email')
         if email:
             queryset = queryset.filter(email=email)
         return queryset
+
+    def create(self, request, *args, **kwargs):
+        print("DEBUG: create method called")
+        password = request.data.get('password')
+        print(f"DEBUG: password = {password}")
+        if password:
+            # Remove password from data before serialization
+            data = request.data.copy()
+            data.pop('password', None)
+            serializer = self.get_serializer(data=data)
+            serializer.is_valid(raise_exception=True)
+            instance = serializer.save()
+            instance.set_password(password)
+            instance.save()
+            headers = self.get_success_headers(serializer.data)
+            return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+        else:
+            return super().create(request, *args, **kwargs)
 
     @action(detail=False, methods=['post'])
     def login(self, request):

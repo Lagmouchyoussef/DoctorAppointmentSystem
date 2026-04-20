@@ -32,14 +32,16 @@ document.querySelector('.sign-up form').addEventListener('submit', async (e) => 
     data = {
       first_name: firstName,
       last_name: lastName,
-      email: email
+      email: email,
+      password: password
     };
   } else {
     url = `${baseUrl}doctors/`;
     data = {
       first_name: firstName,
       last_name: lastName,
-      email: email
+      email: email,
+      password: password
     };
   }
 
@@ -89,43 +91,56 @@ document.querySelector('.sign-in form').addEventListener('submit', async (e) => 
   const baseUrl = '/api/';
 
   try {
-    // Check if patient
-    let response = await fetch(`${baseUrl}patients/?email=${email}`);
-    let data = await response.json();
-    if (data.results.length > 0) {
-      // Set authentication data for patient
-      localStorage.setItem('authToken', `patient_${data.results[0].id}_${Date.now()}`);
-      localStorage.setItem('userRole', 'patient');
-      localStorage.setItem('userId', data.results[0].id);
-      localStorage.setItem('userName', `${data.results[0].first_name} ${data.results[0].last_name}`);
-      localStorage.setItem('email', email);
-      localStorage.setItem('firstName', data.results[0].first_name);
-      localStorage.setItem('lastName', data.results[0].last_name);
+    // Try patient login first
+    let response = await fetch(`${baseUrl}patients/login/`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password }),
+    });
 
-      alert(`Welcome back, ${data.results[0].first_name}!`);
+    if (response.ok) {
+      const userData = await response.json();
+      // Set authentication data for patient
+      localStorage.setItem('authToken', `patient_${userData.id}_${Date.now()}`);
+      localStorage.setItem('userRole', 'patient');
+      localStorage.setItem('userId', userData.id);
+      localStorage.setItem('userName', `${userData.first_name} ${userData.last_name}`);
+      localStorage.setItem('email', userData.email);
+      localStorage.setItem('firstName', userData.first_name);
+      localStorage.setItem('lastName', userData.last_name);
+
+      alert(`Welcome back, ${userData.first_name}!`);
       window.location.href = '../patient/patient.html';
       return;
     }
 
-    // Check if doctor
-    response = await fetch(`${baseUrl}doctors/?email=${email}`);
-    data = await response.json();
-    if (data.results.length > 0) {
-      // Set authentication data for doctor
-      localStorage.setItem('authToken', `doctor_${data.results[0].id}_${Date.now()}`);
-      localStorage.setItem('userRole', 'doctor');
-      localStorage.setItem('userId', data.results[0].id);
-      localStorage.setItem('userName', `Dr. ${data.results[0].first_name} ${data.results[0].last_name}`);
-      localStorage.setItem('email', email);
-      localStorage.setItem('firstName', data.results[0].first_name);
-      localStorage.setItem('lastName', data.results[0].last_name);
+    // Try doctor login
+    response = await fetch(`${baseUrl}doctors/login/`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password }),
+    });
 
-      alert(`Welcome back, Dr. ${data.results[0].first_name}!`);
+    if (response.ok) {
+      const userData = await response.json();
+      // Set authentication data for doctor
+      localStorage.setItem('authToken', `doctor_${userData.id}_${Date.now()}`);
+      localStorage.setItem('userRole', 'doctor');
+      localStorage.setItem('userId', userData.id);
+      localStorage.setItem('userName', `Dr. ${userData.first_name} ${userData.last_name}`);
+      localStorage.setItem('email', userData.email);
+      localStorage.setItem('firstName', userData.first_name);
+      localStorage.setItem('lastName', userData.last_name);
+
+      alert(`Welcome back, Dr. ${userData.first_name}!`);
       window.location.href = '../doctor/doctor.html';
       return;
     }
 
-    alert('User not found.');
+    // If both failed
+    const errorData = await response.json().catch(() => ({}));
+    alert('Invalid email or password.');
+
   } catch (error) {
     console.error('Error:', error);
     alert('Network error: ' + error.message);

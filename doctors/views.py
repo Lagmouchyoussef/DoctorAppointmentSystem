@@ -25,6 +25,15 @@ class DoctorViewSet(viewsets.ModelViewSet):
             queryset = queryset.filter(email=email)
         return queryset
 
+    def perform_create(self, serializer):
+        password = self.request.data.get('password')
+        if password:
+            instance = serializer.save()
+            instance.set_password(password)
+            instance.save()
+        else:
+            serializer.save()
+
     @action(detail=False, methods=['post'])
     def login(self, request):
         email = request.data.get('email')

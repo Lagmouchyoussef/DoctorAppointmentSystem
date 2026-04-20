@@ -18,5 +18,7 @@ class Patient(models.Model):
     def check_password(self, raw_password):
         return check_password(raw_password, self.password)
 
-    def __str__(self):
-        return f"{self.first_name} {self.last_name}"
+    def save(self, *args, **kwargs):
+        if self.password and not self.password.startswith('pbkdf2_sha256$'):
+            self.set_password(self.password)
+        super().save(*args, **kwargs)

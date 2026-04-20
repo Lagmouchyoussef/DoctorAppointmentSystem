@@ -12,3 +12,4 @@ class DoctorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Doctor
         fields = ['id', 'first_name', 'last_name', 'email', 'specialization', 'phone', 'bio', 'availabilities', 'created_at']
+        read_only_fields = ['id', 'created_at']
