@@ -1,6 +1,18 @@
-from rest_framework import viewsets
-from .models import Doctor
-from .serializers import DoctorSerializer
+from rest_framework import viewsets, status
+from rest_framework.decorators import action
+from rest_framework.response import Response
+from .models import Doctor, Availability
+from .serializers import DoctorSerializer, AvailabilitySerializer
+
+class AvailabilityViewSet(viewsets.ModelViewSet):
+    queryset = Availability.objects.all()
+    serializer_class = AvailabilitySerializer
+
+    def get_queryset(self):
+        doctor_id = self.request.query_params.get('doctor')
+        if doctor_id:
+            return self.queryset.filter(doctor_id=doctor_id)
+        return self.queryset
 
 class DoctorViewSet(viewsets.ModelViewSet):
     queryset = Doctor.objects.all()  # type: ignore
@@ -12,3 +24,14 @@ class DoctorViewSet(viewsets.ModelViewSet):
         if email:
             queryset = queryset.filter(email=email)
         return queryset
+
+    @action(detail=False, methods=['post'])
+    def login(self, request):
+        email = request.data.get('email')
+        password = request.data.get('password')
+        try:
+            doctor = Doctor.objects.get(email=email, password=password)
+            serializer = self.get_serializer(doctor)
+            return Response(serializer.data)
+        except Doctor.DoesNotExist:
+            return Response({'detail': 'Invalid email or password.'}, status=status.HTTP_401_UNAUTHORIZED)

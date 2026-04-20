@@ -19,6 +19,18 @@ from django.urls import path, include
 from django.http import HttpResponse, HttpResponseRedirect
 from django.conf import settings
 from django.conf.urls.static import static
+from rest_framework.routers import DefaultRouter
+from patients.views import PatientViewSet
+from doctors.views import DoctorViewSet, AvailabilityViewSet
+from appointments.views import AppointmentViewSet
+from notifications.views import NotificationViewSet
+
+router = DefaultRouter()
+router.register(r'patients', PatientViewSet)
+router.register(r'doctors', DoctorViewSet)
+router.register(r'availabilities', AvailabilityViewSet)
+router.register(r'appointments', AppointmentViewSet)
+router.register(r'notifications', NotificationViewSet)
 
 def home(request):
     return HttpResponseRedirect('/static/index.html')
@@ -26,7 +38,5 @@ def home(request):
 urlpatterns = [
     path('', home, name='home'),
     path('admin/', admin.site.urls),
-    path('api/', include('patients.urls')),
-    path('api/', include('doctors.urls')),
-    path('api/', include('appointments.urls')),
+    path('api/', include(router.urls)),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

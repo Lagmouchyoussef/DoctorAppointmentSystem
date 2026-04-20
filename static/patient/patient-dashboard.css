@@ -115,8 +115,6 @@ body {
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
-
-
 /* Patient Profile Section */
 .patient-profile {
     padding: 20px;
@@ -158,8 +156,6 @@ body {
     background: linear-gradient(135deg, rgba(45, 160, 168, 0.08), rgba(45, 160, 168, 0.04));
     transform: translateX(5px);
 }
-
-
 
 .patient-info h4 {
     color: var(--text-primary);
@@ -438,8 +434,6 @@ body {
     font-weight: 600;
 }
 
-
-
 .dashboard-content {
     padding: 30px;
 }
@@ -635,7 +629,6 @@ body {
     display: flex;
 }
 
-/* Activity Section */
 .activity-list {
     display: flex;
     flex-direction: column;
@@ -755,8 +748,6 @@ body {
     outline-offset: 2px;
 }
 
-
-
 .theme-toggle-btn:focus {
     outline: 2px solid var(--accent-color);
     outline-offset: 2px;
@@ -812,8 +803,6 @@ body {
         padding: 15px;
         margin: 0;
     }
-
-
 
     .patient-info h4 {
         font-size: 14px;
@@ -1572,6 +1561,7 @@ body {
     .invitation-detail {
         font-size: 14px;
     }
+}
 
 /* Modal Styles */
 .modal {
@@ -1638,5 +1628,4 @@ body {
 
 .modal button:hover {
     background-color: var(--accent-hover);
-}
 }

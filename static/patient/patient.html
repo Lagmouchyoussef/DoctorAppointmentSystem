@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="stylesheet" href="patient-dashboard.css">
+    <link rel="stylesheet" href="/static/patient/patient-dashboard.css">
     <title>MediSync - Patient Dashboard</title>
 </head>
 <body>
@@ -13,26 +13,26 @@
         <!-- Left Navbar -->
         <nav class="sidebar">
             <div class="sidebar-header">
-                <img src="../login/Logo_Medisync.png" alt="MediSync Logo" class="logo">
+                <img src="/static/login/Logo_Medisync.png" alt="MediSync Logo" class="logo">
             </div>
 
             <ul class="sidebar-menu">
                  <li class="active ripple tooltip nav-item" data-tooltip="Dashboard Overview" data-page="dashboard">
                     <i class="fas fa-tachometer-alt"></i>
                     <span>Dashboard</span>
-                </li>
+                 </li>
                  <li class="ripple tooltip nav-item" data-tooltip="Manage Appointments" data-page="appointments">
                     <i class="fas fa-calendar-alt"></i>
                     <span>Appointments</span>
-                </li>
+                 </li>
                  <li class="ripple tooltip nav-item" data-tooltip="Appointment History" data-page="history">
                     <i class="fas fa-history"></i>
                     <span>History</span>
-                </li>
+                 </li>
                  <li class="ripple tooltip nav-item" data-tooltip="Account Settings" data-page="settings">
                     <i class="fas fa-cog"></i>
                     <span>Settings</span>
-                </li>
+                 </li>
             </ul>
 
             <!-- Patient Profile Section -->
@@ -58,7 +58,7 @@
                  <button class="logout-btn ripple tooltip" data-tooltip="Sign Out">
                     <i class="fas fa-sign-out-alt"></i>
                     <span>Logout</span>
-                </button>
+                 </button>
             </div>
         </nav>
 
@@ -331,6 +331,6 @@
         </div>
     </div>
 
-    <script src="patient-dashboard.js?v=11"></script>
+    <script src="/static/patient/patient-dashboard.js"></script>
 </body>
 </html>
