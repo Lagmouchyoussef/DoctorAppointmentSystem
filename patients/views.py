@@ -5,7 +5,7 @@ from .models import Patient
 from .serializers import PatientSerializer
 
 class PatientViewSet(viewsets.ModelViewSet):
-    queryset = Patient.objects.all()  # type: ignore
+    queryset = Patient.objects.all().order_by('id')  # type: ignore
     serializer_class = PatientSerializer
 
     def get_queryset(self):
@@ -20,8 +20,11 @@ class PatientViewSet(viewsets.ModelViewSet):
         email = request.data.get('email')
         password = request.data.get('password')
         try:
-            patient = Patient.objects.get(email=email, password=password)
-            serializer = self.get_serializer(patient)
-            return Response(serializer.data)
+            patient = Patient.objects.get(email=email)
+            if patient.check_password(password):
+                serializer = self.get_serializer(patient)
+                return Response(serializer.data)
+            else:
+                return Response({'detail': 'Invalid email or password.'}, status=status.HTTP_401_UNAUTHORIZED)
         except Patient.DoesNotExist:
             return Response({'detail': 'Invalid email or password.'}, status=status.HTTP_401_UNAUTHORIZED)

@@ -3,7 +3,7 @@ from .models import Appointment
 from .serializers import AppointmentSerializer
 
 class AppointmentViewSet(viewsets.ModelViewSet):
-    queryset = Appointment.objects.all()
+    queryset = Appointment.objects.all().order_by('-created_at')
     serializer_class = AppointmentSerializer
 
     def get_queryset(self):
